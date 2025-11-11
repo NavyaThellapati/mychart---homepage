@@ -67,16 +67,28 @@ export function NewMessagePage(): JSX.Element { // Ensure named export
       // Simulate sending message
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      console.log("Sending message:", {
-        to: recipient,
-        subject,
-        messageBody,
-        attachedFiles: attachedFiles.map((f) => f.name),
-        from: currentUser,
-      });
+      // Save the sent message to localStorage
+      const STORAGE_KEY = "mychart_messages";
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const messages = stored ? JSON.parse(stored) : [];
+      
+      const newMessage = {
+        id: `msg-${Date.now()}`,
+        sender: "You",
+        recipient: recipient.name,
+        subject: subject,
+        preview: messageBody.substring(0, 100) + (messageBody.length > 100 ? "..." : ""),
+        date: new Date().toISOString(),
+        body: messageBody,
+        isNew: false,
+        mailbox: "sent",
+      };
+
+      messages.push(newMessage);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
 
       alert("Message sent successfully!");
-      navigate("/messages");
+      navigate("/messages?tab=sent");
     } catch (err: any) {
       setError(err.message || "Failed to send message. Please try again.");
     } finally {

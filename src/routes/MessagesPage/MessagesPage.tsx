@@ -222,6 +222,24 @@ export function MessagesPage(): JSX.Element {
     }
   };
 
+  // Refresh messages when returning to the page
+  useEffect(() => {
+    const handleFocus = () => {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          setMessages(parsed);
+        } catch (e) {
+          console.error("Failed to parse messages:", e);
+        }
+      }
+    };
+
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
+  }, []);
+
   // ==================== RENDER ====================
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
