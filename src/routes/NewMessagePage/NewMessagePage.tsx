@@ -67,9 +67,11 @@ export function NewMessagePage(): JSX.Element { // Ensure named export
       // Simulate sending message
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      // Save the sent message to localStorage
-      const STORAGE_KEY = "mychart_messages";
-      const stored = localStorage.getItem(STORAGE_KEY);
+      // Save the sent message to localStorage for current user
+      if (!currentUser) return;
+      const userId = currentUser.id || currentUser.uid || currentUser.userId || currentUser.email;
+      const storageKey = `messages::${userId}`;
+      const stored = localStorage.getItem(storageKey);
       const messages = stored ? JSON.parse(stored) : [];
       
       const newMessage = {
@@ -85,7 +87,7 @@ export function NewMessagePage(): JSX.Element { // Ensure named export
       };
 
       messages.push(newMessage);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+      localStorage.setItem(storageKey, JSON.stringify(messages));
 
       alert("Message sent successfully!");
       navigate("/messages?tab=sent");

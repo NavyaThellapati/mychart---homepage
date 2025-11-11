@@ -21,7 +21,7 @@ interface Message {
 }
 
 // ==================== STORAGE KEY ====================
-const STORAGE_KEY = "mychart_messages";
+const getStorageKey = (userId: string) => `messages::${userId}`;
 
 // ==================== HELPER FUNCTIONS ====================
 function formatFullDate(dateStr: string): string {
@@ -62,7 +62,9 @@ export function ReplyMessagePage(): JSX.Element {
     if (stateMessage) {
       setOriginalMessage(stateMessage);
     } else if (id) {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const userId = user.id || user.uid || user.userId || user.email;
+      const storageKey = getStorageKey(userId);
+      const stored = localStorage.getItem(storageKey);
       if (stored) {
         try {
           const messages: Message[] = JSON.parse(stored);
@@ -99,7 +101,10 @@ export function ReplyMessagePage(): JSX.Element {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!currentUser) return;
+      const userId = currentUser.id || currentUser.uid || currentUser.userId || currentUser.email;
+      const storageKey = getStorageKey(userId);
+      const stored = localStorage.getItem(storageKey);
       if (stored) {
         const messages: Message[] = JSON.parse(stored);
         const newMessage: Message = {
@@ -114,7 +119,7 @@ export function ReplyMessagePage(): JSX.Element {
           mailbox: "sent",
         };
         messages.push(newMessage);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+        localStorage.setItem(storageKey, JSON.stringify(messages));
       }
 
       alert("Reply sent successfully!");

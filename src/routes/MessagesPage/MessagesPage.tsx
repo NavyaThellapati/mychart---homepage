@@ -22,10 +22,10 @@ interface Message {
 }
 
 // ==================== STORAGE KEY ====================
-const STORAGE_KEY = "mychart_messages";
+const getStorageKey = (userId: string) => `messages::${userId}`;
 
-// ==================== INITIAL MOCK DATA ====================
-const INITIAL_MESSAGES: Message[] = [
+// ==================== INITIAL MOCK DATA (per user) ====================
+const getInitialMessages = (): Message[] => [
   {
     id: "msg1",
     sender: "Dr. Sarah Johnson",
@@ -129,27 +129,34 @@ export function MessagesPage(): JSX.Element {
     }
     setCurrentUser(user);
 
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const userId = user.id || user.uid || user.userId || user.email;
+    const storageKey = getStorageKey(userId);
+    const stored = localStorage.getItem(storageKey);
+    
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
         setMessages(parsed);
       } catch {
-        setMessages(INITIAL_MESSAGES);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MESSAGES));
+        const initialMessages = getInitialMessages();
+        setMessages(initialMessages);
+        localStorage.setItem(storageKey, JSON.stringify(initialMessages));
       }
     } else {
-      setMessages(INITIAL_MESSAGES);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MESSAGES));
+      const initialMessages = getInitialMessages();
+      setMessages(initialMessages);
+      localStorage.setItem(storageKey, JSON.stringify(initialMessages));
     }
   }, [navigate]);
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
-    if (messages.length > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    if (messages.length > 0 && currentUser) {
+      const userId = currentUser.id || currentUser.uid || currentUser.userId || currentUser.email;
+      const storageKey = getStorageKey(userId);
+      localStorage.setItem(storageKey, JSON.stringify(messages));
     }
-  }, [messages]);
+  }, [messages, currentUser]);
 
   // Filter messages by active tab
   const filteredMessages = useMemo(() => {
@@ -225,7 +232,10 @@ export function MessagesPage(): JSX.Element {
   // Refresh messages when returning to the page
   useEffect(() => {
     const handleFocus = () => {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!currentUser) return;
+      const userId = currentUser.id || currentUser.uid || currentUser.userId || currentUser.email;
+      const storageKey = getStorageKey(userId);
+      const stored = localStorage.getItem(storageKey);
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
@@ -238,7 +248,7 @@ export function MessagesPage(): JSX.Element {
 
     window.addEventListener("focus", handleFocus);
     return () => window.removeEventListener("focus", handleFocus);
-  }, []);
+  }, [currentUser]);
 
   // ==================== RENDER ====================
   return (
