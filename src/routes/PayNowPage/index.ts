@@ -1,0 +1,1 @@
+export { PayNowPage } from "./PayNowPage";
