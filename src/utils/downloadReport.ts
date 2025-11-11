@@ -169,7 +169,7 @@ function downloadPDF(
     ]);
 
     // Use autoTable with proper typing
-    (doc as any).autoTable({
+    autoTable(doc, {
       startY: yPos,
       head: [["Analyte", "Result", "Reference Range"]],
       body: tableData,
