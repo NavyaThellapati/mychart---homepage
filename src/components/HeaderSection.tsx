@@ -14,25 +14,66 @@ import {
   Palette,
   LogOut,
   FileText,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useTheme } from "../contexts/ThemeContext";
+import { useLanguage } from "../contexts/LanguageContext";
+import { ThemeLanguageControls } from "./ThemeLanguageControls";
 
-const navigationItems = [
-  { icon: HomeIcon, label: "Home", path: "/dashboard" },
-  { icon: CalendarIcon, label: "Appointments", path: "/appointments" },
-  { icon: FileText, label: "Test Results", path: "/test-results" },
-  { icon: DollarSignIcon, label: "Billing", path: "/billing" }, // Updated icon
-  { icon: PillIcon, label: "Medications", path: "/medications" },
-  { icon: MessageSquareIcon, label: "Messages", path: "/messages" },
-];
+const labels = {
+  en: {
+    nav: {
+      home: "Home",
+      appointments: "Appointments",
+      testResults: "Test Results",
+      billing: "Billing",
+      medications: "Medications",
+      messages: "Messages",
+    },
+    profile: "Profile",
+    settings: "Account Settings",
+    theme: "Theme",
+    dark: "Dark",
+    light: "Light",
+    logout: "Logout",
+  },
+  es: {
+    nav: {
+      home: "Inicio",
+      appointments: "Citas",
+      testResults: "Resultados",
+      billing: "Facturación",
+      medications: "Medicamentos",
+      messages: "Mensajes",
+    },
+    profile: "Perfil",
+    settings: "Configuración",
+    theme: "Tema",
+    dark: "Oscuro",
+    light: "Claro",
+    logout: "Cerrar sesión",
+  },
+};
 
 export function HeaderSection(): JSX.Element {
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useTheme();
+  const { language } = useLanguage();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const t = labels[language];
+
+  const navigationItems = [
+    { icon: HomeIcon, label: t.nav.home, path: "/dashboard" },
+    { icon: CalendarIcon, label: t.nav.appointments, path: "/appointments" },
+    { icon: FileText, label: t.nav.testResults, path: "/test-results" },
+    { icon: DollarSignIcon, label: t.nav.billing, path: "/billing" },
+    { icon: PillIcon, label: t.nav.medications, path: "/medications" },
+    { icon: MessageSquareIcon, label: t.nav.messages, path: "/messages" },
+  ];
 
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
@@ -67,15 +108,15 @@ export function HeaderSection(): JSX.Element {
   const handleSettings = () => { setShowUserMenu(false); navigate("/settings"); };
 
   return (
-    <header className="w-full h-[105px] bg-[#1e88e5] relative z-50 shadow-lg">
+    <header className="w-full h-[96px] bg-[#1E88E5] relative z-50 shadow-lg border-b border-[#1976d2] dark:bg-[#0b1623] dark:border-slate-800">
       <div className="flex items-center justify-between h-full px-[51px]">
         {/* Logo */}
         <div
           className="flex items-center gap-3 h-[67px] cursor-pointer"
           onClick={() => navigate("/dashboard")}
         >
-          <HeartPulse className="w-[54px] h-[54px] text-red-500" />
-          <div className="[font-family:'Inter',Helvetica] font-semibold text-white text-[40px] tracking-[0] leading-[normal]">
+          <HeartPulse className="w-[50px] h-[50px] text-red-500" />
+          <div className="[font-family:'Inter',Helvetica] font-semibold text-white text-[38px] tracking-[0] leading-[normal]">
             MyChart
           </div>
         </div>
@@ -88,10 +129,10 @@ export function HeaderSection(): JSX.Element {
               <Link key={index} to={item.path}>
                 <Button
                   variant="ghost"
-                  className="flex items-center gap-2 h-auto px-4 py-2 hover:bg-white/10 transition-colors"
+                  className="flex items-center gap-2 h-auto px-4 py-2 text-white hover:bg-white/10 transition-colors"
                 >
-                  <IconComponent className="w-6 h-6 text-white" />
-                  <span className="[font-family:'Inter',Helvetica] font-medium text-white text-xl tracking-[0] leading-[normal] whitespace-nowrap">
+                  <IconComponent className="w-5 h-5" />
+                  <span className="[font-family:'Inter',Helvetica] font-semibold text-lg tracking-[0] leading-[normal] whitespace-nowrap">
                     {item.label}
                   </span>
                 </Button>
@@ -100,12 +141,15 @@ export function HeaderSection(): JSX.Element {
           })}
         </nav>
 
+        <div className="flex items-center gap-3">
+        <ThemeLanguageControls variant="dark" />
+
         {/* User Menu */}
         <div className="relative" ref={menuRef}>
           <button
             ref={menuButtonRef}
             onClick={(e) => { e.stopPropagation(); setShowUserMenu((v) => !v); }}
-            className="flex items-center gap-2 bg-white text-gray-800 px-5 py-2.5 rounded-full hover:bg-gray-50 transition-colors shadow-md"
+            className="flex items-center gap-2 bg-white text-slate-800 px-5 py-2.5 rounded-full hover:bg-blue-50 hover:text-[#1E88E5] transition-colors shadow-md border border-white/20 dark:bg-white/10 dark:text-white dark:border-white/10 dark:hover:bg-white/15"
             aria-haspopup="menu"
             aria-expanded={showUserMenu}
           >
@@ -128,7 +172,7 @@ export function HeaderSection(): JSX.Element {
                 className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-[#161e2d] flex items-center gap-3"
               >
                 <User className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                <span className="text-gray-800 dark:text-gray-100 font-medium">Profile</span>
+                <span className="text-gray-800 dark:text-gray-100 font-medium">{t.profile}</span>
               </button>
 
               <button
@@ -138,7 +182,7 @@ export function HeaderSection(): JSX.Element {
                 className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-[#161e2d] flex items-center gap-3"
               >
                 <Settings className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                <span className="text-gray-800 dark:text-gray-100 font-medium">Account Settings</span>
+                <span className="text-gray-800 dark:text-gray-100 font-medium">{t.settings}</span>
               </button>
 
               <button
@@ -147,9 +191,13 @@ export function HeaderSection(): JSX.Element {
                 onClick={handleThemeToggle}
                 className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-[#161e2d] flex items-center gap-3"
               >
-                <Palette className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                {isDarkMode ? (
+                  <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                ) : (
+                  <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                )}
                 <span className="text-gray-800 dark:text-gray-100 font-medium">
-                  Theme {isDarkMode ? "(Dark)" : "(Light)"}
+                  {t.theme} {isDarkMode ? `(${t.dark})` : `(${t.light})`}
                 </span>
               </button>
 
@@ -162,10 +210,11 @@ export function HeaderSection(): JSX.Element {
                 className="w-full px-4 py-3 text-left hover:bg-red-50 dark:hover:bg-[#2a0f12] flex items-center gap-3"
               >
                 <LogOut className="w-5 h-5 text-red-600" />
-                <span className="text-red-600 font-medium">Logout</span>
+                <span className="text-red-600 font-medium">{t.logout}</span>
               </button>
             </div>
           )}
+        </div>
         </div>
       </div>
     </header>

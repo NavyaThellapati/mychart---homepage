@@ -1,4 +1,25 @@
 class AuthService {
+  constructor() {
+    this.apiBaseUrl = 'http://localhost:5000/api/auth';
+  }
+
+  async requestJson(path, options) {
+    const response = await fetch(`${this.apiBaseUrl}${path}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(options?.headers || {}),
+      },
+      ...options,
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw data;
+    }
+
+    return data;
+  }
+
   // Register new user
   async register(userData) {
     try {
@@ -116,6 +137,128 @@ class AuthService {
           email: user.email,
           phone: user.phone,
         },
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Verify account before password reset
+  async requestPasswordReset(email) {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      if (!email) {
+        throw { success: false, message: 'Email address is required' };
+      }
+
+      if (!email.includes('@')) {
+        throw { success: false, message: 'Please enter a valid email address' };
+      }
+
+      try {
+        const response = await this.requestJson('/forgot-password', {
+          method: 'POST',
+          body: JSON.stringify({ email }),
+        });
+
+        if (response.resetToken) {
+          sessionStorage.setItem('passwordResetEmail', email);
+          sessionStorage.setItem('passwordResetToken', response.resetToken);
+        }
+
+        return response;
+      } catch (apiError) {
+        if (apiError?.message && apiError?.success === false) {
+          throw apiError;
+        }
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+      if (!user) {
+        throw { success: false, message: 'No account found with this email address' };
+      }
+
+      const resetToken = 'mock-reset-token-' + Date.now();
+      sessionStorage.setItem('passwordResetEmail', user.email);
+      sessionStorage.setItem('passwordResetToken', resetToken);
+
+      return {
+        success: true,
+        message: 'Account verified. You can now reset your password.',
+        resetToken,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Reset password for verified account
+  async resetPassword(email, resetToken, newPassword, confirmPassword) {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      if (!email || !resetToken) {
+        throw { success: false, message: 'Password reset session has expired. Please start again.' };
+      }
+
+      if (!newPassword || !confirmPassword) {
+        throw { success: false, message: 'Please enter and confirm your new password' };
+      }
+
+      if (newPassword.length < 6) {
+        throw { success: false, message: 'Password must be at least 6 characters' };
+      }
+
+      if (newPassword !== confirmPassword) {
+        throw { success: false, message: 'Passwords do not match' };
+      }
+
+      try {
+        return await this.requestJson('/reset-password', {
+          method: 'POST',
+          body: JSON.stringify({
+            email,
+            resetToken,
+            newPassword,
+            confirmPassword,
+          }),
+        });
+      } catch (apiError) {
+        if (apiError?.message && apiError?.success === false) {
+          throw apiError;
+        }
+      }
+
+      const storedEmail = sessionStorage.getItem('passwordResetEmail');
+      const storedToken = sessionStorage.getItem('passwordResetToken');
+
+      if (storedEmail !== email || storedToken !== resetToken) {
+        throw { success: false, message: 'Password reset session has expired. Please start again.' };
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
+
+      if (userIndex === -1) {
+        throw { success: false, message: 'No account found with this email address' };
+      }
+
+      users[userIndex] = {
+        ...users[userIndex],
+        password: newPassword,
+        updatedAt: new Date().toISOString(),
+      };
+
+      localStorage.setItem('users', JSON.stringify(users));
+      sessionStorage.removeItem('passwordResetEmail');
+      sessionStorage.removeItem('passwordResetToken');
+
+      return {
+        success: true,
+        message: 'Password updated successfully. Please log in with your new password.',
       };
     } catch (error) {
       throw error;

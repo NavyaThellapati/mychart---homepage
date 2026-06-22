@@ -385,7 +385,7 @@ export const TestResultsPage = (): JSX.Element => {
           includeAnalytes,
           includeDoctorNotes,
         },
-        currentUser
+        currentUser ?? undefined
       );
       setShowDownloadModal(false);
       alert(`Report downloaded successfully as ${downloadFormat.toUpperCase()}!`);

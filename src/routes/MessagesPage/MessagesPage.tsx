@@ -252,14 +252,14 @@ export function MessagesPage(): JSX.Element {
 
   // ==================== RENDER ====================
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col dark:from-slate-950 dark:to-slate-900">
       <HeaderSection />
 
       <main className="flex-1 container mx-auto px-8 py-12 relative z-10">
         {/* Back to Home */}
         <Link
           to="/dashboard"
-          className="flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E88E5] focus-visible:ring-offset-2 rounded"
+          className="flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E88E5] focus-visible:ring-offset-2 rounded dark:text-blue-300 dark:hover:text-blue-200 dark:focus-visible:ring-offset-slate-950"
         >
           <ChevronLeft className="w-6 h-6" />
           Home
@@ -268,8 +268,8 @@ export function MessagesPage(): JSX.Element {
         {/* Header Row */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-5xl font-bold text-black mb-3">Messages</h1>
-            <p className="text-xl text-gray-600">
+            <h1 className="text-5xl font-bold text-black mb-3 dark:text-slate-50">Messages</h1>
+            <p className="text-xl text-gray-600 dark:text-slate-200">
               Communicate securely with your healthcare providers.
             </p>
           </div>
@@ -302,9 +302,9 @@ export function MessagesPage(): JSX.Element {
         {/* Two Column Layout */}
         <div className="grid grid-cols-3 gap-8">
           {/* Left Column: Message List */}
-          <Card className="col-span-1 rounded-3xl shadow-lg bg-white overflow-hidden">
+          <Card className="col-span-1 rounded-3xl shadow-lg bg-white overflow-hidden dark:bg-slate-900 dark:border-slate-700">
             <CardContent className="p-0">
-              <h2 className="text-2xl font-bold text-black px-6 py-4 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-black px-6 py-4 border-b border-gray-200 dark:text-slate-50 dark:border-slate-700">
                 {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
               </h2>
               <div className="divide-y divide-gray-100 max-h-[600px] overflow-y-auto">
@@ -313,14 +313,14 @@ export function MessagesPage(): JSX.Element {
                     <button
                       key={message.id}
                       onClick={() => handleMessageClick(message)}
-                      className={`w-full p-6 text-left hover:bg-gray-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1E88E5] ${
+                      className={`w-full p-6 text-left hover:bg-gray-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1E88E5] dark:hover:bg-slate-800/80 ${
                         selectedMessage?.id === message.id
-                          ? "bg-blue-50 border-l-4 border-[#1E88E5]"
+                          ? "bg-blue-50 border-l-4 border-[#1E88E5] dark:bg-slate-800"
                           : ""
                       }`}
                     >
                       <div className="flex justify-between items-center mb-1">
-                        <h3 className="text-lg font-bold text-gray-900 truncate">
+                        <h3 className="text-lg font-bold text-gray-900 truncate dark:text-slate-50">
                           {message.sender}
                         </h3>
                         {message.isNew && message.mailbox === "inbox" && (
@@ -329,17 +329,17 @@ export function MessagesPage(): JSX.Element {
                           </span>
                         )}
                       </div>
-                      <p className="text-base font-semibold text-gray-800 mb-1 truncate">
+                      <p className="text-base font-semibold text-gray-800 mb-1 truncate dark:text-slate-100">
                         {message.subject}
                       </p>
-                      <p className="text-sm text-gray-600 truncate mb-1">
+                      <p className="text-sm text-gray-600 truncate mb-1 dark:text-slate-300">
                         {message.preview}
                       </p>
-                      <p className="text-xs text-gray-500">{formatDate(message.date)}</p>
+                      <p className="text-xs text-gray-500 dark:text-slate-400">{formatDate(message.date)}</p>
                     </button>
                   ))
                 ) : (
-                  <div className="p-12 text-center text-gray-500">
+                  <div className="p-12 text-center text-gray-500 dark:text-slate-300">
                     {activeTab === "inbox" && "Your inbox is clear."}
                     {activeTab === "sent" && "No sent messages yet."}
                     {activeTab === "deleted" && "Trash is empty."}
@@ -350,35 +350,35 @@ export function MessagesPage(): JSX.Element {
           </Card>
 
           {/* Right Column: Message Viewer */}
-          <Card className="col-span-2 rounded-3xl shadow-lg bg-white">
+          <Card className="col-span-2 rounded-3xl shadow-lg bg-white dark:bg-slate-900 dark:border-slate-700">
             <CardContent className="p-8 h-full flex flex-col">
               {selectedMessage ? (
                 <>
                   {/* Message Header */}
-                  <div className="mb-6 pb-6 border-b border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  <div className="mb-6 pb-6 border-b border-gray-200 dark:border-slate-700">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-3 dark:text-slate-50">
                       {selectedMessage.subject}
                     </h2>
-                    <p className="text-sm text-gray-500 mb-2">
+                    <p className="text-sm text-gray-500 mb-2 dark:text-slate-300">
                       {formatFullDate(selectedMessage.date)}
                     </p>
-                    <p className="text-base text-gray-700">
+                    <p className="text-base text-gray-700 dark:text-slate-100">
                       <span className="font-semibold">From:</span> {selectedMessage.sender}
                     </p>
                     {selectedMessage.recipient && (
-                      <p className="text-base text-gray-700">
+                      <p className="text-base text-gray-700 dark:text-slate-100">
                         <span className="font-semibold">To:</span> {selectedMessage.recipient}
                       </p>
                     )}
                   </div>
 
                   {/* Message Body */}
-                  <div className="flex-1 text-gray-800 leading-relaxed whitespace-pre-wrap mb-6 overflow-y-auto">
+                  <div className="flex-1 text-gray-800 leading-relaxed whitespace-pre-wrap mb-6 overflow-y-auto dark:text-slate-100">
                     {selectedMessage.body}
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                  <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-slate-700">
                     {activeTab === "inbox" && (
                       <>
                         <Button
@@ -427,7 +427,7 @@ export function MessagesPage(): JSX.Element {
                   </div>
                 </>
               ) : (
-                <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                <div className="flex flex-col items-center justify-center h-full text-gray-500 dark:text-slate-300">
                   <MessageSquare className="w-20 h-20 mb-4" />
                   <p className="text-xl">Select a message to view</p>
                 </div>

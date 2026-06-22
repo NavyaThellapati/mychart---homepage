@@ -6,7 +6,6 @@
       "routes": [
         "/"
       ],
-      "dataModelId": "1:272",
       "isRoot": true
     },
     {
@@ -141,19 +140,26 @@
       "routes": [
         "/medications"
       ]
+    },
+    {
+      "id": "src/screens/Login/ForgotPassword.tsx",
+      "label": "ForgotPassword",
+      "routes": [
+        "/forgot-password"
+      ]
     }
   ],
   "edges": [
     {
-      "id": "src/screens/Homepage/Homepage.tsx:101:10-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Homepage/Homepage.tsx:130:10-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Homepage/Homepage.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
-          "element": "<Link to=\"/login\">\n            <Button className=\"px-10 h-13 bg-[#2563eb] hover:bg-[#1d4ed8] [font-family:'Inter',Helvetica] font-bold text-white text-lg transition-colors rounded-xl shadow-md\">\n              Login\n            </Button>\n          </Link>",
-          "line": 101,
-          "endLine": 105,
+          "element": "<Link to=\"/login\">\n            <Button className=\"px-10 h-13 bg-[#2563eb] hover:bg-[#1d4ed8] [font-family:'Inter',Helvetica] font-bold text-white text-lg transition-colors rounded-xl shadow-md\">\n              {text.login}\n            </Button>\n          </Link>",
+          "line": 130,
+          "endLine": 134,
           "column": 10,
           "endColumn": 17,
           "sourceFile": "src/screens/Homepage/Homepage.tsx"
@@ -161,15 +167,15 @@
       }
     },
     {
-      "id": "src/screens/Homepage/Homepage.tsx:107:10-to-src/screens/Register/Register.tsx",
+      "id": "src/screens/Homepage/Homepage.tsx:136:10-to-src/screens/Register/Register.tsx",
       "source": "src/screens/Homepage/Homepage.tsx",
       "target": "src/screens/Register/Register.tsx",
       "data": {
         "viaRoute": "/register",
         "trigger": {
-          "element": "<Link to=\"/register\">\n            <Button\n              variant=\"outline\"\n              className=\"px-10 h-13 bg-white hover:bg-gray-50 border-2 border-gray-300 [font-family:'Inter',Helvetica] font-bold text-[#111111] text-lg transition-colors rounded-xl shadow-md\"\n            >\n              Create Account\n            </Button>\n          </Link>",
-          "line": 107,
-          "endLine": 114,
+          "element": "<Link to=\"/register\">\n            <Button\n              variant=\"outline\"\n              className=\"px-10 h-13 bg-white hover:bg-gray-50 border-2 border-gray-300 [font-family:'Inter',Helvetica] font-bold text-[#111111] text-lg transition-colors rounded-xl shadow-md\"\n            >\n              {text.create}\n            </Button>\n          </Link>",
+          "line": 136,
+          "endLine": 143,
           "column": 10,
           "endColumn": 17,
           "sourceFile": "src/screens/Homepage/Homepage.tsx"
@@ -177,79 +183,79 @@
       }
     },
     {
-      "id": "src/screens/Homepage/Homepage.tsx:171:4-to-src/screens/InteroperabilityGuide/InteroperabilityGuide.tsx",
+      "id": "src/screens/Homepage/Homepage.tsx:195:12-to-src/screens/InteroperabilityGuide/InteroperabilityGuide.tsx",
       "source": "src/screens/Homepage/Homepage.tsx",
       "target": "src/screens/InteroperabilityGuide/InteroperabilityGuide.tsx",
       "data": {
         "viaRoute": "/interoperability-guide",
         "trigger": {
-          "element": "<a href=\"/interoperability-guide\" className=\"text-[#4b5563]\">\n  Interoperability Guide\n</a>",
-          "line": 171,
-          "endLine": 173,
-          "column": 4,
-          "endColumn": 4,
+          "element": "<Link to=\"/interoperability-guide\" className=\"text-[#2563eb]\">\n              {text.interoperability}\n            </Link>",
+          "line": 195,
+          "endLine": 197,
+          "column": 12,
+          "endColumn": 19,
           "sourceFile": "src/screens/Homepage/Homepage.tsx"
         }
       }
     },
     {
-      "id": "src/screens/Homepage/Homepage.tsx:175:0-to-src/screens/FAQs/FAQs.tsx",
+      "id": "src/screens/Homepage/Homepage.tsx:199:12-to-src/screens/FAQs/FAQs.tsx",
       "source": "src/screens/Homepage/Homepage.tsx",
       "target": "src/screens/FAQs/FAQs.tsx",
       "data": {
         "viaRoute": "/faqs",
         "trigger": {
-          "element": "<a href=\"/faqs\" className=\"text-[#4b5563]\">\n  FAQs\n</a>",
-          "line": 175,
-          "endLine": 177,
-          "column": 0,
-          "endColumn": 4,
+          "element": "<Link to=\"/faqs\" className=\"text-[#2563eb]\">\n              {text.faqs}\n            </Link>",
+          "line": 199,
+          "endLine": 201,
+          "column": 12,
+          "endColumn": 19,
           "sourceFile": "src/screens/Homepage/Homepage.tsx"
         }
       }
     },
     {
-      "id": "src/screens/Homepage/Homepage.tsx:179:0-to-src/screens/PrivacyPolicy/PrivacyPolicy.tsx",
+      "id": "src/screens/Homepage/Homepage.tsx:203:12-to-src/screens/PrivacyPolicy/PrivacyPolicy.tsx",
       "source": "src/screens/Homepage/Homepage.tsx",
       "target": "src/screens/PrivacyPolicy/PrivacyPolicy.tsx",
       "data": {
         "viaRoute": "/privacy-policy",
         "trigger": {
-          "element": "<a href=\"/privacy-policy\" className=\"text-[#4b5563]\">\n  Privacy Policy\n</a>",
-          "line": 179,
-          "endLine": 181,
-          "column": 0,
-          "endColumn": 4,
+          "element": "<Link to=\"/privacy-policy\" className=\"text-[#2563eb]\">\n              {text.privacy}\n            </Link>",
+          "line": 203,
+          "endLine": 205,
+          "column": 12,
+          "endColumn": 19,
           "sourceFile": "src/screens/Homepage/Homepage.tsx"
         }
       }
     },
     {
-      "id": "src/screens/Homepage/Homepage.tsx:183:0-to-src/screens/TermsConditions/TermsConditions.tsx",
+      "id": "src/screens/Homepage/Homepage.tsx:207:12-to-src/screens/TermsConditions/TermsConditions.tsx",
       "source": "src/screens/Homepage/Homepage.tsx",
       "target": "src/screens/TermsConditions/TermsConditions.tsx",
       "data": {
         "viaRoute": "/terms-and-conditions",
         "trigger": {
-          "element": "<a href=\"/terms-and-conditions\" className=\"text-[#4b5563]\">\n  Terms and Conditions\n</a>",
-          "line": 183,
-          "endLine": 185,
-          "column": 0,
-          "endColumn": 4,
+          "element": "<Link to=\"/terms-and-conditions\" className=\"text-[#2563eb]\">\n              {text.terms}\n            </Link>",
+          "line": 207,
+          "endLine": 209,
+          "column": 12,
+          "endColumn": 19,
           "sourceFile": "src/screens/Homepage/Homepage.tsx"
         }
       }
     },
     {
-      "id": "src/screens/Login/Login.tsx:26:8-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/screens/Login/Login.tsx:143:8-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Login/Login.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 26,
-          "endLine": 26,
+          "line": 143,
+          "endLine": 143,
           "column": 8,
           "endColumn": 30,
           "sourceFile": "src/screens/Login/Login.tsx"
@@ -257,15 +263,15 @@
       }
     },
     {
-      "id": "src/screens/Login/Login.tsx:124:16-to-src/screens/Register/Register.tsx",
+      "id": "src/screens/Login/Login.tsx:293:16-to-src/screens/Login/ForgotPassword.tsx",
       "source": "src/screens/Login/Login.tsx",
-      "target": "src/screens/Register/Register.tsx",
+      "target": "src/screens/Login/ForgotPassword.tsx",
       "data": {
-        "viaRoute": "/register",
+        "viaRoute": "/forgot-password",
         "trigger": {
-          "element": "<Link\n                  to=\"/register\"\n                  className=\"text-[#1E88E5] hover:underline font-medium\"\n                >\n                  Create Account\n                </Link>",
-          "line": 124,
-          "endLine": 129,
+          "element": "<Link\n                  to=\"/forgot-password\"\n                  className=\"text-sm text-blue-500 hover:underline font-medium\"\n                >\n                  {t.forgot}\n                </Link>",
+          "line": 293,
+          "endLine": 298,
           "column": 16,
           "endColumn": 23,
           "sourceFile": "src/screens/Login/Login.tsx"
@@ -273,31 +279,47 @@
       }
     },
     {
-      "id": "src/screens/Login/Login.tsx:147:14-to-src/screens/Homepage/Homepage.tsx",
+      "id": "src/screens/Login/Login.tsx:336:16-to-src/screens/Register/Register.tsx",
       "source": "src/screens/Login/Login.tsx",
-      "target": "src/screens/Homepage/Homepage.tsx",
+      "target": "src/screens/Register/Register.tsx",
       "data": {
-        "viaRoute": "/",
+        "viaRoute": "/register",
         "trigger": {
-          "element": "<Link\n                to=\"/\"\n                className=\"text-sm text-gray-500 hover:text-gray-700\"\n              >\n                ← Back to Home\n              </Link>",
-          "line": 147,
-          "endLine": 152,
-          "column": 14,
-          "endColumn": 21,
+          "element": "<Link\n                  to=\"/register\"\n                  className=\"text-blue-500 hover:underline font-semibold\"\n                >\n                  {t.create}\n                </Link>",
+          "line": 336,
+          "endLine": 341,
+          "column": 16,
+          "endColumn": 23,
           "sourceFile": "src/screens/Login/Login.tsx"
         }
       }
     },
     {
-      "id": "src/screens/Register/Register.tsx:50:8-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/screens/Login/Login.tsx:459:16-to-src/screens/Homepage/Homepage.tsx",
+      "source": "src/screens/Login/Login.tsx",
+      "target": "src/screens/Homepage/Homepage.tsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "<Link\n                  to=\"/\"\n                  className={`text-sm hover:text-blue-500 ${\n                    isDark ? \"text-slate-400\" : \"text-slate-500\"\n                  }`}\n                >\n                  {t.backHome}\n                </Link>",
+          "line": 459,
+          "endLine": 466,
+          "column": 16,
+          "endColumn": 23,
+          "sourceFile": "src/screens/Login/Login.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/screens/Register/Register.tsx:108:8-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Register/Register.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 50,
-          "endLine": 50,
+          "line": 108,
+          "endLine": 108,
           "column": 8,
           "endColumn": 30,
           "sourceFile": "src/screens/Register/Register.tsx"
@@ -305,15 +327,15 @@
       }
     },
     {
-      "id": "src/screens/Register/Register.tsx:223:14-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Register/Register.tsx:295:14-to-src/screens/TermsConditions/TermsConditions.tsx",
       "source": "src/screens/Register/Register.tsx",
-      "target": "src/screens/Login/Login.tsx",
+      "target": "src/screens/TermsConditions/TermsConditions.tsx",
       "data": {
-        "viaRoute": "/login",
+        "viaRoute": "/terms-and-conditions",
         "trigger": {
-          "element": "<Link\n                to=\"/login\"\n                className=\"text-[#1E88E5] hover:underline font-medium\"\n              >\n                Log In\n              </Link>",
-          "line": 223,
-          "endLine": 228,
+          "element": "<Link\n                to=\"/terms-and-conditions\"\n                className=\"text-[#1E88E5] hover:underline\"\n              >\n                {text.terms}\n              </Link>",
+          "line": 295,
+          "endLine": 300,
           "column": 14,
           "endColumn": 21,
           "sourceFile": "src/screens/Register/Register.tsx"
@@ -321,15 +343,79 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Register/Register.tsx:302:14-to-src/screens/PrivacyPolicy/PrivacyPolicy.tsx",
+      "source": "src/screens/Register/Register.tsx",
+      "target": "src/screens/PrivacyPolicy/PrivacyPolicy.tsx",
+      "data": {
+        "viaRoute": "/privacy-policy",
+        "trigger": {
+          "element": "<Link\n                to=\"/privacy-policy\"\n                className=\"text-[#1E88E5] hover:underline\"\n              >\n                {text.privacy}\n              </Link>",
+          "line": 302,
+          "endLine": 307,
+          "column": 14,
+          "endColumn": 21,
+          "sourceFile": "src/screens/Register/Register.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/screens/Register/Register.tsx:340:14-to-src/screens/Login/Login.tsx",
+      "source": "src/screens/Register/Register.tsx",
+      "target": "src/screens/Login/Login.tsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link\n                to=\"/login\"\n                className=\"text-[#1E88E5] hover:underline font-medium\"\n              >\n                {text.login}\n              </Link>",
+          "line": 340,
+          "endLine": 345,
+          "column": 14,
+          "endColumn": 21,
+          "sourceFile": "src/screens/Register/Register.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/screens/Dashboard/Dashboard.tsx:201:29-to-src/routes/NewAppointment/NewAppointment.tsx",
+      "source": "src/screens/Dashboard/Dashboard.tsx",
+      "target": "src/routes/NewAppointment/NewAppointment.tsx",
+      "data": {
+        "viaRoute": "/appointments/new",
+        "trigger": {
+          "element": "navigate(\"/appointments/new\")",
+          "line": 201,
+          "endLine": 201,
+          "column": 29,
+          "endColumn": 58,
+          "sourceFile": "src/screens/Dashboard/Dashboard.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/screens/Dashboard/Dashboard.tsx:208:29-to-src/routes/NewMessagePage/NewMessagePage.tsx",
+      "source": "src/screens/Dashboard/Dashboard.tsx",
+      "target": "src/routes/NewMessagePage/NewMessagePage.tsx",
+      "data": {
+        "viaRoute": "/messages/new",
+        "trigger": {
+          "element": "navigate(\"/messages/new\")",
+          "line": 208,
+          "endLine": 208,
+          "column": 29,
+          "endColumn": 54,
+          "sourceFile": "src/screens/Dashboard/Dashboard.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -337,15 +423,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -353,15 +439,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -369,15 +455,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -401,15 +487,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -417,15 +503,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -433,15 +519,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -449,15 +535,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -481,15 +567,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -497,15 +583,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -513,15 +599,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -529,15 +615,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -561,16 +647,16 @@
       }
     },
     {
-      "id": "src/screens/FAQs/FAQs.tsx:88:230-to-src/screens/Homepage/Homepage.tsx",
+      "id": "src/screens/FAQs/FAQs.tsx:89:6-to-src/screens/Homepage/Homepage.tsx",
       "source": "src/screens/FAQs/FAQs.tsx",
       "target": "src/screens/Homepage/Homepage.tsx",
       "data": {
         "viaRoute": "/",
         "trigger": {
           "element": "<a href=\"/\" className=\"text-[#2563eb] font-semibold text-lg\">\n        ← Back to Home\n      </a>",
-          "line": 88,
-          "endLine": 90,
-          "column": 230,
+          "line": 89,
+          "endLine": 91,
+          "column": 6,
           "endColumn": 10,
           "sourceFile": "src/screens/FAQs/FAQs.tsx"
         }
@@ -641,15 +727,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -657,15 +743,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -673,15 +759,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -689,15 +775,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -721,15 +807,15 @@
       }
     },
     {
-      "id": "src/routes/NewAppointment/NewAppointment.tsx:16:4-to-src/screens/Login/Login.tsx",
+      "id": "src/routes/NewAppointment/NewAppointment.tsx:17:4-to-src/screens/Login/Login.tsx",
       "source": "src/routes/NewAppointment/NewAppointment.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 16,
-          "endLine": 16,
+          "line": 17,
+          "endLine": 17,
           "column": 4,
           "endColumn": 22,
           "sourceFile": "src/routes/NewAppointment/NewAppointment.tsx"
@@ -737,15 +823,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -753,15 +839,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -769,15 +855,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -785,15 +871,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -881,15 +967,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -897,15 +983,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -913,15 +999,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -929,15 +1015,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -945,15 +1031,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -961,15 +1047,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -977,15 +1063,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -993,15 +1079,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1025,15 +1111,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1041,15 +1127,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1057,15 +1143,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1073,15 +1159,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1127,7 +1213,7 @@
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
-          "element": "<Link\n          to=\"/dashboard\"\n          className=\"flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors\"\n        >\n          <ChevronLeft className=\"w-6 h-6\" />\n          Home\n        </Link>",
+          "element": "<Link\n          to=\"/dashboard\"\n          className=\"flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors dark:text-blue-300 dark:hover:text-blue-200\"\n        >\n          <ChevronLeft className=\"w-6 h-6\" />\n          Home\n        </Link>",
           "line": 173,
           "endLine": 179,
           "column": 8,
@@ -1137,15 +1223,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1153,15 +1239,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1169,15 +1255,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1185,15 +1271,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1281,15 +1367,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1297,15 +1383,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1313,15 +1399,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1329,15 +1415,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1383,7 +1469,7 @@
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
-          "element": "<Link\n          to=\"/dashboard\"\n          className=\"flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E88E5] focus-visible:ring-offset-2 rounded\"\n        >\n          <ChevronLeft className=\"w-6 h-6\" />\n          Home\n        </Link>",
+          "element": "<Link\n          to=\"/dashboard\"\n          className=\"flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E88E5] focus-visible:ring-offset-2 rounded dark:text-blue-300 dark:hover:text-blue-200 dark:focus-visible:ring-offset-slate-950\"\n        >\n          <ChevronLeft className=\"w-6 h-6\" />\n          Home\n        </Link>",
           "line": 260,
           "endLine": 266,
           "column": 8,
@@ -1409,15 +1495,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1425,15 +1511,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1441,15 +1527,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1457,15 +1543,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1521,15 +1607,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1537,15 +1623,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1553,15 +1639,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1569,15 +1655,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1665,15 +1751,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1681,15 +1767,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1697,15 +1783,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1713,15 +1799,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1729,15 +1815,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1745,15 +1831,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1761,15 +1847,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1777,15 +1863,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1825,15 +1911,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:58:4-to-src/screens/Login/Login.tsx",
+      "id": "src/components/HeaderSection.tsx:99:4-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\", { replace: true })",
-          "line": 58,
-          "endLine": 58,
+          "line": 99,
+          "endLine": 99,
           "column": 4,
           "endColumn": 41,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1841,15 +1927,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:66:56-to-src/screens/Profile/Profile.tsx",
+      "id": "src/components/HeaderSection.tsx:107:56-to-src/screens/Profile/Profile.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Profile/Profile.tsx",
       "data": {
         "viaRoute": "/profile",
         "trigger": {
           "element": "navigate(\"/profile\")",
-          "line": 66,
-          "endLine": 66,
+          "line": 107,
+          "endLine": 107,
           "column": 56,
           "endColumn": 76,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1857,15 +1943,15 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:67:57-to-src/screens/Settings/Settings.tsx",
+      "id": "src/components/HeaderSection.tsx:108:57-to-src/screens/Settings/Settings.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Settings/Settings.tsx",
       "data": {
         "viaRoute": "/settings",
         "trigger": {
           "element": "navigate(\"/settings\")",
-          "line": 67,
-          "endLine": 67,
+          "line": 108,
+          "endLine": 108,
           "column": 57,
           "endColumn": 78,
           "sourceFile": "src/components/HeaderSection.tsx"
@@ -1873,18 +1959,66 @@
       }
     },
     {
-      "id": "src/components/HeaderSection.tsx:75:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/components/HeaderSection.tsx:116:25-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Dashboard/Dashboard.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 75,
-          "endLine": 75,
+          "line": 116,
+          "endLine": 116,
           "column": 25,
           "endColumn": 47,
           "sourceFile": "src/components/HeaderSection.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/screens/Login/ForgotPassword.tsx:117:25-to-src/screens/Login/Login.tsx",
+      "source": "src/screens/Login/ForgotPassword.tsx",
+      "target": "src/screens/Login/Login.tsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate(\"/login\")",
+          "line": 117,
+          "endLine": 117,
+          "column": 25,
+          "endColumn": 43,
+          "sourceFile": "src/screens/Login/ForgotPassword.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/screens/Login/ForgotPassword.tsx:191:14-to-src/screens/Login/Login.tsx",
+      "source": "src/screens/Login/ForgotPassword.tsx",
+      "target": "src/screens/Login/Login.tsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link\n                to=\"/login\"\n                className=\"text-blue-500 hover:underline font-semibold\"\n              >\n                Login\n              </Link>",
+          "line": 191,
+          "endLine": 196,
+          "column": 14,
+          "endColumn": 21,
+          "sourceFile": "src/screens/Login/ForgotPassword.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/screens/Login/ForgotPassword.tsx:348:29-to-src/screens/Login/Login.tsx",
+      "source": "src/screens/Login/ForgotPassword.tsx",
+      "target": "src/screens/Login/Login.tsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate(\"/login\")",
+          "line": 348,
+          "endLine": 348,
+          "column": 29,
+          "endColumn": 47,
+          "sourceFile": "src/screens/Login/ForgotPassword.tsx"
         }
       }
     }

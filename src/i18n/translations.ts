@@ -1,0 +1,33 @@
+export const translations = {
+    en: {
+      language: "Language",
+      english: "English",
+      spanish: "Español",
+      welcome: "Welcome Back",
+      subtitle: "Sign in to access your health portal",
+      username: "Username or Email",
+      password: "Password",
+      remember: "Remember me",
+      forgot: "Forgot password?",
+      login: "Login",
+      secure: "Secure patient portal access",
+      noAccount: "Don’t have an account?",
+      create: "Create Account",
+    },
+  
+    es: {
+      language: "Idioma",
+      english: "English",
+      spanish: "Español",
+      welcome: "Bienvenido de nuevo",
+      subtitle: "Inicie sesión para acceder a su portal de salud",
+      username: "Usuario o correo electrónico",
+      password: "Contraseña",
+      remember: "Recordarme",
+      forgot: "¿Olvidó su contraseña?",
+      login: "Iniciar sesión",
+      secure: "Acceso seguro al portal del paciente",
+      noAccount: "¿No tiene una cuenta?",
+      create: "Crear cuenta",
+    },
+  };

@@ -143,7 +143,7 @@ export function BillingPage(): JSX.Element {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#E3F2FD] to-white" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#E3F2FD] to-white dark:from-slate-950 dark:to-slate-900" />
 
       {/* Right-side illustration (blend to remove white background) */}
       <img
@@ -163,7 +163,7 @@ export function BillingPage(): JSX.Element {
       />
 
       {/* Soft overlay for readability */}
-      <div className="absolute inset-0 bg-white/10 backdrop-blur-[0.5px] z-[1]" />
+      <div className="absolute inset-0 bg-white/10 backdrop-blur-[0.5px] z-[1] dark:bg-slate-950/20" />
 
       <HeaderSection />
 
@@ -172,7 +172,7 @@ export function BillingPage(): JSX.Element {
         {/* Back link */}
         <Link
           to="/dashboard"
-          className="flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors"
+          className="flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors dark:text-blue-300 dark:hover:text-blue-200"
         >
           <ChevronLeft className="w-6 h-6" />
           Home
@@ -181,30 +181,30 @@ export function BillingPage(): JSX.Element {
         <div className="max-w-5xl">
           {/* Title */}
           <div className="mb-8">
-            <h1 className="text-5xl font-bold text-black mb-3">Billing & Payments</h1>
-            <p className="text-xl text-gray-600">
+            <h1 className="text-5xl font-bold text-black mb-3 dark:text-slate-50">Billing & Payments</h1>
+            <p className="text-xl text-gray-600 dark:text-slate-200">
               View your balance, Payment history, and securely pay your bills online
             </p>
           </div>
 
           {/* Outstanding Bills */}
           <div className="relative mb-12">
-            <h2 className="text-3xl font-bold text-black mb-6">Outstanding Bills</h2>
+            <h2 className="text-3xl font-bold text-black mb-6 dark:text-slate-50">Outstanding Bills</h2>
             {bills.filter((b) => b.status !== "Paid").length > 0 ? (
               bills
                 .filter((b) => b.status !== "Paid")
                 .map((bill) => (
                   <Card
                     key={bill.id}
-                    className="relative z-10 rounded-3xl shadow-lg bg-white/95 backdrop-blur-sm mb-4"
+                    className="relative z-10 rounded-3xl shadow-lg bg-white/95 backdrop-blur-sm mb-4 dark:bg-slate-900/95 dark:border-slate-700"
                   >
                     <CardContent className="p-8">
                       <div className="flex items-center justify-between mb-6">
                         <div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                          <h3 className="text-2xl font-bold text-gray-900 mb-2 dark:text-slate-50">
                             {bill.provider}
                           </h3>
-                          <p className="text-lg text-gray-600">Due by: {formatDate(bill.dueDate)}</p>
+                          <p className="text-lg text-gray-600 dark:text-slate-200">Due by: {formatDate(bill.dueDate)}</p>
                         </div>
                         <div className="text-right">
                           <p className="text-3xl font-bold text-red-600 mb-2">
@@ -233,7 +233,7 @@ export function BillingPage(): JSX.Element {
                         <Button
                           onClick={() => handleDownloadBill(bill)}
                           variant="outline"
-                          className="h-12 px-6 border-2 border-gray-300 text-gray-700 font-semibold text-lg rounded-xl hover:bg-gray-50"
+                          className="h-12 px-6 border-2 border-gray-300 text-gray-700 font-semibold text-lg rounded-xl hover:bg-gray-50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
                         >
                           <Download className="w-5 h-5 mr-2" />
                           Download Bill
@@ -243,35 +243,35 @@ export function BillingPage(): JSX.Element {
                   </Card>
                 ))
             ) : (
-              <div className="text-center py-8 text-gray-500">No outstanding bills.</div>
+              <div className="text-center py-8 text-gray-500 dark:text-slate-300">No outstanding bills.</div>
             )}
           </div>
 
           {/* Payment History */}
           <div>
-            <h2 className="text-3xl font-bold text-black mb-6">Payment History</h2>
-            <Card className="rounded-3xl shadow-lg bg-white/95 backdrop-blur-sm overflow-hidden">
+            <h2 className="text-3xl font-bold text-black mb-6 dark:text-slate-50">Payment History</h2>
+            <Card className="rounded-3xl shadow-lg bg-white/95 backdrop-blur-sm overflow-hidden dark:bg-slate-900/95 dark:border-slate-700">
               <CardContent className="p-0">
-                <div className="grid grid-cols-6 gap-4 px-8 py-4 bg-gray-50 border-b border-gray-200">
-                  <div className="font-bold text-gray-900">Date</div>
-                  <div className="font-bold text-gray-900">Invoice</div>
-                  <div className="font-bold text-gray-900">Department</div>
-                  <div className="font-bold text-gray-900">Amount</div>
-                  <div className="font-bold text-gray-900">Status</div>
-                  <div className="font-bold text-gray-900">Action</div>
+                <div className="grid grid-cols-6 gap-4 px-8 py-4 bg-gray-50 border-b border-gray-200 dark:bg-slate-800 dark:border-slate-700">
+                  <div className="font-bold text-gray-900 dark:text-slate-50">Date</div>
+                  <div className="font-bold text-gray-900 dark:text-slate-50">Invoice</div>
+                  <div className="font-bold text-gray-900 dark:text-slate-50">Department</div>
+                  <div className="font-bold text-gray-900 dark:text-slate-50">Amount</div>
+                  <div className="font-bold text-gray-900 dark:text-slate-50">Status</div>
+                  <div className="font-bold text-gray-900 dark:text-slate-50">Action</div>
                 </div>
 
                 {paymentHistory.map((payment, index) => (
                   <div
                     key={payment.id}
                     className={`grid grid-cols-6 gap-4 px-8 py-5 ${
-                      index !== paymentHistory.length - 1 ? "border-b border-gray-100" : ""
-                    } hover:bg-gray-50 transition-colors`}
+                      index !== paymentHistory.length - 1 ? "border-b border-gray-100 dark:border-slate-700" : ""
+                    } hover:bg-gray-50 transition-colors dark:hover:bg-slate-800/80`}
                   >
-                    <div className="text-gray-900">{formatDate(payment.date)}</div>
-                    <div className="text-gray-900">{payment.invoice}</div>
-                    <div className="text-gray-900">{payment.department}</div>
-                    <div className="text-gray-900 font-semibold">
+                    <div className="text-gray-900 dark:text-slate-100">{formatDate(payment.date)}</div>
+                    <div className="text-gray-900 dark:text-slate-100">{payment.invoice}</div>
+                    <div className="text-gray-900 dark:text-slate-100">{payment.department}</div>
+                    <div className="text-gray-900 font-semibold dark:text-slate-100">
                       ${payment.amount.toFixed(2)}
                     </div>
                     <div>
@@ -290,7 +290,7 @@ export function BillingPage(): JSX.Element {
                         onClick={() => handleDownloadPaymentReceipt(payment)}
                         variant="outline"
                         size="sm"
-                        className="h-9 px-3 border border-gray-300 text-gray-700 hover:bg-gray-100 rounded-lg"
+                        className="h-9 px-3 border border-gray-300 text-gray-700 hover:bg-gray-100 rounded-lg dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
                       >
                         <Download className="w-4 h-4 mr-1" />
                         Download

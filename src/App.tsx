@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Homepage } from "./screens/Homepage";
 import { Login } from "./screens/Login";
@@ -20,8 +20,16 @@ import { InteroperabilityGuide } from "./screens/InteroperabilityGuide/Interoper
 import { FAQs } from "./screens/FAQs";
 import { PrivacyPolicy } from "./screens/PrivacyPolicy";
 import { TermsConditions } from "./screens/TermsConditions";
+import ForgotPassword from "./screens/Login/ForgotPassword";
+import { MyChartChatbot } from "./components/MyChartChatbot";
 
 export const App = (): JSX.Element => {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    document.documentElement.classList.toggle("dark", savedTheme === "dark");
+  }, []);
+
   return (
     <Router>
       <Routes>
@@ -36,9 +44,9 @@ export const App = (): JSX.Element => {
           path="/interoperability-guide"
           element={<InteroperabilityGuide />}
         />
-       <Route path="/faqs" element={<FAQs />} />
-       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-       <Route path="/terms-and-conditions" element={<TermsConditions />} />
+        <Route path="/faqs" element={<FAQs />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsConditions />} />
 
         <Route path="/appointments" element={<AppointmentsPage />} />
         <Route path="/appointments/new" element={<NewAppointment />} />
@@ -50,7 +58,9 @@ export const App = (): JSX.Element => {
         <Route path="/messages/new" element={<NewMessagePage />} />
         <Route path="/messages/reply" element={<ReplyMessagePage />} />
         <Route path="/medications" element={<MedicationsPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
+      <MyChartChatbot />
     </Router>
   );
 };
