@@ -6,11 +6,13 @@ import { useTheme } from "../contexts/ThemeContext";
 interface ThemeLanguageControlsProps {
   variant?: "light" | "dark";
   className?: string;
+  compact?: boolean;
 }
 
 export function ThemeLanguageControls({
   variant = "light",
   className = "",
+  compact = false,
 }: ThemeLanguageControlsProps): JSX.Element {
   const { language, setLanguage } = useLanguage();
   const { isDarkMode, toggleTheme } = useTheme();
@@ -41,7 +43,7 @@ export function ThemeLanguageControls({
       <button
         type="button"
         onClick={toggleTheme}
-        className={`flex h-11 items-center gap-2 rounded-xl border px-4 text-sm font-semibold shadow-sm transition-colors ${controlClass}`}
+        className={`flex h-11 items-center gap-2 rounded-xl border px-3 text-sm font-semibold shadow-sm transition-colors ${controlClass}`}
         aria-label={isDarkMode ? "Switch to light theme" : "Switch to dark theme"}
       >
         {isDarkMode ? (
@@ -49,7 +51,9 @@ export function ThemeLanguageControls({
         ) : (
           <Moon className="h-5 w-5" aria-hidden="true" />
         )}
-        <span>{isDarkMode ? "Light Mode" : "Dark Mode"}</span>
+        <span className={compact ? "hidden 2xl:inline" : ""}>
+          {isDarkMode ? "Light Mode" : "Dark Mode"}
+        </span>
       </button>
     </div>
   );

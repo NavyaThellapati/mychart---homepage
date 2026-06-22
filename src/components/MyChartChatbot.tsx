@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import {
   Bot,
   Calendar,
@@ -94,8 +93,6 @@ const copy = {
 };
 
 export function MyChartChatbot(): JSX.Element {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { language } = useLanguage();
   const text = copy[language];
   const [isOpen, setIsOpen] = useState(false);
@@ -162,18 +159,33 @@ export function MyChartChatbot(): JSX.Element {
     setInput("");
   };
 
-  const openSection = (path: string) => {
-    if (location.pathname !== path) navigate(path);
-    setIsOpen(false);
+  const answerQuickAction = (path: string, label: string) => {
+    const replyByPath: Record<string, string> = {
+      "/appointments": text.replies.appointment,
+      "/test-results": text.replies.results,
+      "/billing": text.replies.billing,
+      "/medications": text.replies.medication,
+    };
+    const nextId = Date.now();
+
+    setMessages((current) => [
+      ...current,
+      { id: nextId, sender: "user", text: label },
+      {
+        id: nextId + 1,
+        sender: "assistant",
+        text: replyByPath[path] ?? text.replies.default,
+      },
+    ]);
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[100] sm:bottom-6 sm:right-6">
+    <div className="fixed bottom-20 right-5 z-[100] sm:bottom-24 sm:right-6">
       {isOpen && (
         <section
           role="dialog"
           aria-label={text.title}
-          className="mb-4 flex h-[min(610px,calc(100vh-110px))] w-[min(390px,calc(100vw-32px))] flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900"
+          className="mb-4 flex h-[min(610px,calc(100vh-190px))] w-[min(390px,calc(100vw-32px))] flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900"
         >
           <header className="flex h-16 shrink-0 items-center justify-between bg-[#1E88E5] px-4 text-white dark:bg-[#0b1623]">
             <div className="flex items-center gap-3">
@@ -228,7 +240,7 @@ export function MyChartChatbot(): JSX.Element {
                   <button
                     key={action.path}
                     type="button"
-                    onClick={() => openSection(action.path)}
+                    onClick={() => answerQuickAction(action.path, action.label)}
                     className="flex min-h-10 items-center gap-2 rounded-md border border-slate-200 px-2.5 py-2 text-left text-xs font-semibold text-slate-700 hover:border-blue-300 hover:bg-blue-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     <Icon className="h-4 w-4 shrink-0 text-[#1E88E5]" aria-hidden="true" />

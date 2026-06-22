@@ -108,31 +108,33 @@ export function HeaderSection(): JSX.Element {
   const handleSettings = () => { setShowUserMenu(false); navigate("/settings"); };
 
   return (
-    <header className="w-full h-[96px] bg-[#1E88E5] relative z-50 shadow-lg border-b border-[#1976d2] dark:bg-[#0b1623] dark:border-slate-800">
-      <div className="flex items-center justify-between h-full px-[51px]">
+    <header className="relative z-50 h-20 w-full border-b border-[#1976d2] bg-[#1E88E5] shadow-lg dark:border-slate-800 dark:bg-[#0b1623] lg:h-[88px]">
+      <div className="flex h-full min-w-0 items-center justify-between gap-3 px-4 sm:px-5 lg:px-6 2xl:px-8">
         {/* Logo */}
         <div
-          className="flex items-center gap-3 h-[67px] cursor-pointer"
+          className="flex h-[60px] shrink-0 cursor-pointer items-center gap-2"
           onClick={() => navigate("/dashboard")}
         >
-          <HeartPulse className="w-[50px] h-[50px] text-red-500" />
-          <div className="[font-family:'Inter',Helvetica] font-semibold text-white text-[38px] tracking-[0] leading-[normal]">
+          <HeartPulse className="h-10 w-10 text-red-500" />
+          <div className="hidden text-[28px] font-semibold leading-normal text-white sm:block xl:text-[32px]">
             MyChart
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex items-center gap-8 h-full">
+        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-1 lg:flex xl:gap-2">
           {navigationItems.map((item, index) => {
             const IconComponent = item.icon;
             return (
               <Link key={index} to={item.path}>
                 <Button
                   variant="ghost"
-                  className="flex items-center gap-2 h-auto px-4 py-2 text-white hover:bg-white/10 transition-colors"
+                  className="flex h-10 items-center gap-2 px-2 py-2 text-white transition-colors hover:bg-white/10 2xl:px-3"
+                  aria-label={item.label}
+                  title={item.label}
                 >
                   <IconComponent className="w-5 h-5" />
-                  <span className="[font-family:'Inter',Helvetica] font-semibold text-lg tracking-[0] leading-[normal] whitespace-nowrap">
+                  <span className="hidden whitespace-nowrap text-base font-semibold 2xl:inline">
                     {item.label}
                   </span>
                 </Button>
@@ -141,15 +143,15 @@ export function HeaderSection(): JSX.Element {
           })}
         </nav>
 
-        <div className="flex items-center gap-3">
-        <ThemeLanguageControls variant="dark" />
+        <div className="flex shrink-0 items-center gap-2">
+        <ThemeLanguageControls variant="dark" compact />
 
         {/* User Menu */}
         <div className="relative" ref={menuRef}>
           <button
             ref={menuButtonRef}
             onClick={(e) => { e.stopPropagation(); setShowUserMenu((v) => !v); }}
-            className="flex items-center gap-2 bg-white text-slate-800 px-5 py-2.5 rounded-full hover:bg-blue-50 hover:text-[#1E88E5] transition-colors shadow-md border border-white/20 dark:bg-white/10 dark:text-white dark:border-white/10 dark:hover:bg-white/15"
+            className="flex h-11 items-center gap-1 rounded-full border border-white/20 bg-white px-3 text-slate-800 shadow-md transition-colors hover:bg-blue-50 hover:text-[#1E88E5] dark:border-white/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/15 sm:px-4"
             aria-haspopup="menu"
             aria-expanded={showUserMenu}
           >

@@ -162,13 +162,16 @@
 
   html,
   body,
-  #root {
+  #root,
+  #app {
     min-height: 100%;
+    width: 100%;
   }
 
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
   }
 }
 
@@ -176,7 +179,8 @@
 
 [data-theme="dark"],
 [data-theme="dark"] body,
-[data-theme="dark"] #root {
+[data-theme="dark"] #root,
+[data-theme="dark"] #app {
   background: #020617 !important;
   color: #f1f5f9 !important;
 }
