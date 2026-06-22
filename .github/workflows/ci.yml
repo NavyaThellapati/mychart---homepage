@@ -7,6 +7,7 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:16
@@ -23,8 +24,8 @@ jobs:
           --health-retries 5
 
     env:
-      NODE_ENV: test
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/mychart_test
+      TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/mychart_test
       JWT_SECRET: ci-only-jwt-secret-with-at-least-thirty-two-characters
       CLIENT_URL: http://localhost:5173
 
@@ -46,6 +47,8 @@ jobs:
 
       - name: Run backend integration tests
         run: npm run test:server
+        env:
+          NODE_ENV: test
 
       - name: Build production frontend
         run: npm run build
