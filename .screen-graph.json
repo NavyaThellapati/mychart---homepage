@@ -471,15 +471,15 @@
       }
     },
     {
-      "id": "src/screens/Profile/Profile.tsx:42:6-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Profile/Profile.tsx:44:6-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Profile/Profile.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 42,
-          "endLine": 42,
+          "line": 44,
+          "endLine": 44,
           "column": 6,
           "endColumn": 24,
           "sourceFile": "src/screens/Profile/Profile.tsx"
@@ -791,15 +791,15 @@
       }
     },
     {
-      "id": "src/routes/AppointmentsPage/sections/AppointmentsList.tsx:89:6-to-src/screens/Login/Login.tsx",
+      "id": "src/routes/AppointmentsPage/sections/AppointmentsList.tsx:80:6-to-src/screens/Login/Login.tsx",
       "source": "src/routes/AppointmentsPage/AppointmentsPage.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 89,
-          "endLine": 89,
+          "line": 80,
+          "endLine": 80,
           "column": 6,
           "endColumn": 24,
           "sourceFile": "src/routes/AppointmentsPage/sections/AppointmentsList.tsx"
@@ -807,15 +807,15 @@
       }
     },
     {
-      "id": "src/routes/NewAppointment/NewAppointment.tsx:17:4-to-src/screens/Login/Login.tsx",
+      "id": "src/routes/NewAppointment/NewAppointment.tsx:18:4-to-src/screens/Login/Login.tsx",
       "source": "src/routes/NewAppointment/NewAppointment.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 17,
-          "endLine": 17,
+          "line": 18,
+          "endLine": 18,
           "column": 4,
           "endColumn": 22,
           "sourceFile": "src/routes/NewAppointment/NewAppointment.tsx"
@@ -887,15 +887,15 @@
       }
     },
     {
-      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:113:6-to-src/screens/Login/Login.tsx",
+      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:101:6-to-src/screens/Login/Login.tsx",
       "source": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 113,
-          "endLine": 113,
+          "line": 101,
+          "endLine": 101,
           "column": 6,
           "endColumn": 24,
           "sourceFile": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx"
@@ -903,15 +903,15 @@
       }
     },
     {
-      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:131:33-to-src/routes/AppointmentsPage/AppointmentsPage.tsx",
+      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:124:33-to-src/routes/AppointmentsPage/AppointmentsPage.tsx",
       "source": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx",
       "target": "src/routes/AppointmentsPage/AppointmentsPage.tsx",
       "data": {
         "viaRoute": "/appointments",
         "trigger": {
           "element": "navigate(\"/appointments\")",
-          "line": 131,
-          "endLine": 131,
+          "line": 124,
+          "endLine": 124,
           "column": 33,
           "endColumn": 58,
           "sourceFile": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx"
@@ -919,15 +919,15 @@
       }
     },
     {
-      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:193:27-to-src/routes/AppointmentsPage/AppointmentsPage.tsx",
+      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:171:27-to-src/routes/AppointmentsPage/AppointmentsPage.tsx",
       "source": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx",
       "target": "src/routes/AppointmentsPage/AppointmentsPage.tsx",
       "data": {
         "viaRoute": "/appointments",
         "trigger": {
           "element": "navigate(\"/appointments\")",
-          "line": 193,
-          "endLine": 193,
+          "line": 171,
+          "endLine": 171,
           "column": 27,
           "endColumn": 52,
           "sourceFile": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx"
@@ -935,15 +935,15 @@
       }
     },
     {
-      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:283:35-to-src/routes/NewAppointment/NewAppointment.tsx",
+      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:261:35-to-src/routes/NewAppointment/NewAppointment.tsx",
       "source": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx",
       "target": "src/routes/NewAppointment/NewAppointment.tsx",
       "data": {
         "viaRoute": "/appointments/new",
         "trigger": {
           "element": "navigate(\"/appointments/new\")",
-          "line": 283,
-          "endLine": 283,
+          "line": 261,
+          "endLine": 261,
           "column": 35,
           "endColumn": 64,
           "sourceFile": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx"
@@ -951,15 +951,15 @@
       }
     },
     {
-      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:290:35-to-src/routes/NewAppointment/NewAppointment.tsx",
+      "id": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx:268:35-to-src/routes/NewAppointment/NewAppointment.tsx",
       "source": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx",
       "target": "src/routes/NewAppointment/NewAppointment.tsx",
       "data": {
         "viaRoute": "/appointments/new",
         "trigger": {
           "element": "navigate(\"/appointments/new\")",
-          "line": 290,
-          "endLine": 290,
+          "line": 268,
+          "endLine": 268,
           "column": 35,
           "endColumn": 64,
           "sourceFile": "src/routes/AppointmentDetailsPage/AppointmentDetailsPage.tsx"
@@ -1901,7 +1901,7 @@
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
-          "element": "<Link\n          to=\"/dashboard\"\n          className=\"flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors\"\n        >\n          <ChevronLeft className=\"w-6 h-6\" />\n          Home\n        </Link>",
+          "element": "<Link\n          to=\"/dashboard\"\n          className=\"mb-7 flex items-center gap-2 text-base font-semibold text-slate-700 transition-colors hover:text-[#1E88E5] dark:text-blue-300 dark:hover:text-blue-200\"\n        >\n          <ChevronLeft className=\"w-6 h-6\" />\n          Home\n        </Link>",
           "line": 211,
           "endLine": 217,
           "column": 8,

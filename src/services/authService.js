@@ -1,4 +1,4 @@
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5001').replace(/\/$/, '');
 
 class AuthService {
   constructor() {
@@ -6,13 +6,21 @@ class AuthService {
   }
 
   async requestJson(path, options = {}) {
-    const response = await fetch(`${this.apiBaseUrl}${path}`, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(options.headers || {}),
-      },
-    });
+    let response;
+    try {
+      response = await fetch(`${this.apiBaseUrl}${path}`, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(options.headers || {}),
+        },
+      });
+    } catch (_error) {
+      throw {
+        success: false,
+        message: 'Cannot reach the MyChart API. Start the PostgreSQL database and backend server.',
+      };
+    }
     const data = await response.json().catch(() => ({
       success: false,
       message: 'The server returned an invalid response',

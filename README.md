@@ -102,6 +102,8 @@ All appointment routes require a Bearer JWT.
 createdb mychart
 ```
 
+For Homebrew PostgreSQL on macOS, use `DATABASE_URL=postgresql://localhost:5432/mychart`.
+
 2. Install dependencies and create the environment file:
 
 ```bash
@@ -120,8 +122,10 @@ npm run dev:all
 The backend creates the `users` and `appointments` tables and index automatically on startup.
 
 - Frontend: `http://127.0.0.1:5173`
-- API: `http://localhost:5000`
-- Health check: `http://localhost:5000/api/health`
+- API: `http://localhost:5001`
+- Health check: `http://localhost:5001/api/health`
+
+Port `5001` is used locally because macOS Control Center/AirPlay commonly occupies port `5000`.
 
 ## Environment Variables
 

@@ -1,6 +1,6 @@
 import authService from './authService';
 
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5001').replace(/\/$/, '');
 
 export type AppointmentStatus =
   | 'Upcoming'
@@ -40,14 +40,19 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = authService.getToken();
   if (!token) throw new Error('Authentication required');
 
-  const response = await fetch(`${API_URL}/api/appointments${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-      ...(options.headers || {}),
-    },
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}/api/appointments${path}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        ...(options.headers || {}),
+      },
+    });
+  } catch (_error) {
+    throw new Error('Cannot reach the MyChart API. Start the PostgreSQL database and backend server.');
+  }
   const data = await response.json().catch(() => ({ message: 'Invalid server response' }));
   if (!response.ok) throw new Error(data.message || 'Appointment request failed');
   return data as T;
