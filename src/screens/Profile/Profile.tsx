@@ -35,6 +35,8 @@ export function Profile(): JSX.Element {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState<any>({});
+  const [saveError, setSaveError] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const user = authService.getCurrentUser();
@@ -46,19 +48,19 @@ export function Profile(): JSX.Element {
     setEditedUser(user);
   }, [navigate]);
 
-  const handleSave = () => {
-    // Update user in localStorage
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const userIndex = users.findIndex((u: any) => u.id === currentUser.id);
-
-    if (userIndex !== -1) {
-      users[userIndex] = { ...users[userIndex], ...editedUser };
-      localStorage.setItem("users", JSON.stringify(users));
-      localStorage.setItem("user", JSON.stringify(editedUser));
-      setCurrentUser(editedUser);
+  const handleSave = async () => {
+    setSaving(true);
+    setSaveError("");
+    try {
+      const response = await authService.updateProfile(editedUser);
+      setCurrentUser(response.user);
+      setEditedUser(response.user);
+      setIsEditing(false);
+    } catch (error: any) {
+      setSaveError(error.message || "Unable to update profile");
+    } finally {
+      setSaving(false);
     }
-
-    setIsEditing(false);
   };
 
   const handleCancel = () => {
@@ -100,14 +102,21 @@ export function Profile(): JSX.Element {
                 </Button>
                 <Button
                   onClick={handleSave}
+                  disabled={saving}
                   className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg flex items-center gap-2"
                 >
                   <Save className="w-5 h-5" />
-                  Save Changes
+                  {saving ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             )}
           </div>
+
+          {saveError && (
+            <div className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+              {saveError}
+            </div>
+          )}
 
           {/* Profile Card */}
           <Card className="shadow-lg">

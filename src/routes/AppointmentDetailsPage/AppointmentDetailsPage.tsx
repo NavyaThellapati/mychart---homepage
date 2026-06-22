@@ -14,6 +14,7 @@ import {
   XCircle,
 } from "lucide-react";
 import authService from "../../services/authService";
+import appointmentService, { Appointment } from "../../services/appointmentService";
 
 // ---- Doctor-specific time slots (same style as NewAppointment) ----
 const TIME_SLOTS: Record<string, string[]> = {
@@ -75,21 +76,6 @@ function badge(status: string) {
   }
 }
 
-type ApptStatus = "Upcoming" | "Attended" | "Did not show up" | "Cancelled";
-interface Appointment {
-  id: string;
-  doctor: string;
-  specialty?: string;
-  type?: string;
-  reason?: string;
-  notes?: string;
-  status: ApptStatus;
-  startISO?: string;
-  datetime?: string;
-  date?: string;
-  time?: string;
-}
-
 // Build the unified doctor key used in TIME_SLOTS
 function doctorKey(appt: Appointment) {
   return appt.specialty ? `${appt.specialty} – ${appt.doctor}` : appt.doctor;
@@ -100,6 +86,8 @@ export const AppointmentDetailsPage = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [appt, setAppt] = useState<Appointment | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   // reschedule modal state
   const [showResched, setShowResched] = useState(false);
@@ -113,10 +101,13 @@ export const AppointmentDetailsPage = (): JSX.Element => {
       navigate("/login");
       return;
     }
-    const key = `appointments::${user.id}`;
-    const list: Appointment[] = JSON.parse(localStorage.getItem(key) || "[]");
-    const found = list.find((a) => a.id === id) || null;
-    setAppt(found);
+    if (!id) return;
+    setLoading(true);
+    appointmentService
+      .get(id)
+      .then(setAppt)
+      .catch((loadError) => setError(loadError instanceof Error ? loadError.message : "Appointment not found"))
+      .finally(() => setLoading(false));
   }, [id, navigate]);
 
   const iso = useMemo(() => coerceISO(appt || {}), [appt]);
@@ -127,7 +118,9 @@ export const AppointmentDetailsPage = (): JSX.Element => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col">
         <HeaderSection />
         <main className="flex-1 container mx-auto px-8 py-12 text-center">
-          <p className="text-xl text-gray-700">Appointment not found.</p>
+          <p className="text-xl text-gray-700 dark:text-slate-200">
+            {loading ? "Loading appointment..." : error || "Appointment not found."}
+          </p>
           <Button onClick={() => navigate("/appointments")} className="mt-4">
             Back to Appointments
           </Button>
@@ -137,47 +130,32 @@ export const AppointmentDetailsPage = (): JSX.Element => {
   }
 
   // ----- actions -----
-  const onCancel = () => {
+  const onCancel = async () => {
     if (appt.status !== "Upcoming") return;
-    const user = authService.getCurrentUser();
-    if (!user) return;
-    const key = `appointments::${user.id}`;
-    const list: Appointment[] = JSON.parse(localStorage.getItem(key) || "[]");
-    const idx = list.findIndex((a) => a.id === appt.id);
-    if (idx !== -1) {
-      list[idx] = { ...list[idx], status: "Cancelled" };
-      localStorage.setItem(key, JSON.stringify(list));
+    try {
+      await appointmentService.cancel(appt.id);
+      navigate("/appointments?tab=canceled");
+    } catch (cancelError) {
+      setError(cancelError instanceof Error ? cancelError.message : "Unable to cancel appointment");
     }
-    navigate("/appointments?tab=canceled");
   };
 
-  const onRescheduleSave = () => {
+  const onRescheduleSave = async () => {
     if (!newDate || !newSlot) {
       alert("Please select a date and a time slot.");
       return;
     }
-    const user = authService.getCurrentUser();
-    if (!user) return;
-
-    const key = `appointments::${user.id}`;
-    const list: Appointment[] = JSON.parse(localStorage.getItem(key) || "[]");
-    const idx = list.findIndex((a) => a.id === appt.id);
-    if (idx === -1) return;
-
     const startISO = `${newDate}T${to24h(newSlot)}:00`;
-
-    list[idx] = {
-      ...list[idx],
-      date: newDate,
-      time: newSlot,
-      startISO,
-      status: "Upcoming",
-    };
-
-    localStorage.setItem(key, JSON.stringify(list));
-    setAppt(list[idx]);
-    setShowResched(false);
-    alert("✅ Appointment rescheduled successfully.");
+    try {
+      const updated = await appointmentService.update(appt.id, {
+        startsAt: startISO,
+        status: "Upcoming",
+      });
+      setAppt(updated);
+      setShowResched(false);
+    } catch (updateError) {
+      setError(updateError instanceof Error ? updateError.message : "Unable to reschedule appointment");
+    }
   };
 
   // slots for this doctor

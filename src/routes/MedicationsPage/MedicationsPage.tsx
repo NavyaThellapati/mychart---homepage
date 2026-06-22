@@ -161,13 +161,13 @@ function formatDate(dateStr: string): string {
 function getStatusBadgeClass(status: string): string {
   switch (status) {
     case "Active":
-      return "bg-green-100 text-green-700";
+      return "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-1 dark:ring-emerald-400/25";
     case "Needs Refill":
-      return "bg-yellow-100 text-yellow-700";
+      return "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-200 dark:ring-1 dark:ring-amber-400/25";
     case "Discontinued":
-      return "bg-gray-100 text-gray-700";
+      return "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200";
     default:
-      return "bg-gray-100 text-gray-700";
+      return "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200";
   }
 }
 
@@ -195,10 +195,10 @@ export function MedicationsPage(): JSX.Element {
   }, [medications, selectedMed]);
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
+    <div className="medications-page relative flex min-h-screen flex-col overflow-hidden bg-slate-50 dark:bg-[#020617]">
       {/* Background with gradient */}
       <div
-        className="absolute inset-0 bg-gradient-to-br from-[#E3F2FD] to-[#F0F4FF]"
+        className="absolute inset-0 bg-gradient-to-br from-[#E3F2FD] to-[#F0F4FF] dark:bg-none dark:bg-[#020617]"
       />
 
       {/* Decorative illustration on the right */}
@@ -206,11 +206,11 @@ export function MedicationsPage(): JSX.Element {
 
       <HeaderSection />
 
-      <main className="flex-1 container mx-auto px-8 py-12 relative z-10">
+      <main className="relative z-10 mx-auto w-full max-w-7xl flex-1 px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
         {/* Back to Home */}
         <Link
           to="/dashboard"
-          className="flex items-center gap-2 text-black text-lg font-medium mb-8 hover:text-[#1E88E5] transition-colors"
+          className="mb-7 flex items-center gap-2 text-base font-semibold text-slate-700 transition-colors hover:text-[#1E88E5] dark:text-blue-300 dark:hover:text-blue-200"
         >
           <ChevronLeft className="w-6 h-6" />
           Home
@@ -218,36 +218,38 @@ export function MedicationsPage(): JSX.Element {
 
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-5xl font-bold text-black mb-3">Medications</h1>
-          <p className="text-xl text-gray-600">
+          <h1 className="mb-3 text-4xl font-bold text-slate-950 dark:text-white">Medications</h1>
+          <p className="text-lg text-slate-600 dark:text-slate-300">
             View your current prescriptions, dosages, and refill history
           </p>
         </div>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
           {/* Left Column: Current Medications List */}
-          <div className="col-span-2 space-y-6">
-            <h2 className="text-3xl font-bold text-black mb-6">Current Medications</h2>
+          <div className="space-y-4">
+            <h2 className="mb-5 text-2xl font-bold text-slate-950 dark:text-white">Current Medications</h2>
 
             {medications.map((med) => (
               <Card
                 key={med.id}
                 onClick={() => setSelectedMed(med)}
-                className={`rounded-3xl shadow-lg cursor-pointer transition-all hover:shadow-xl bg-white/95 backdrop-blur-sm ${
-                  selectedMed?.id === med.id ? "ring-4 ring-[#1E88E5]" : ""
+                className={`cursor-pointer rounded-lg border bg-white/95 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md dark:bg-slate-900/90 dark:hover:border-blue-500/60 ${
+                  selectedMed?.id === med.id
+                    ? "border-[#1E88E5] ring-2 ring-[#1E88E5]/30 dark:bg-slate-800/95"
+                    : "border-slate-200 dark:border-slate-700"
                 }`}
               >
-                <CardContent className="p-8">
+                <CardContent className="p-5 sm:p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                      <h3 className="mb-1 text-xl font-bold text-slate-950 dark:text-white">
                         {med.name} {med.genericName && `(${med.genericName})`}
                       </h3>
-                      <p className="text-lg text-gray-700 mb-2">
+                      <p className="mb-2 text-base text-slate-700 dark:text-slate-200">
                         {med.dosage} - {med.frequency}
                       </p>
-                      <p className="text-base text-gray-600 flex items-center gap-2">
+                      <p className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
                         <User className="w-4 h-4" />
                         Prescribed by, {med.prescribedBy}
                       </p>
@@ -261,7 +263,7 @@ export function MedicationsPage(): JSX.Element {
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-base text-gray-600 pt-4 border-t border-gray-200">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-4 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-300">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
                       <span>Start Date: {formatDate(med.startDate)}</span>
@@ -278,13 +280,13 @@ export function MedicationsPage(): JSX.Element {
           </div>
 
           {/* Right Column: Selected Medication Details + Reminders */}
-          <div className="col-span-1 space-y-6">
+          <aside className="space-y-5 lg:sticky lg:top-5 lg:self-start">
             {/* Selected Medication Details */}
             {selectedMed && (
-              <Card className="rounded-3xl shadow-lg bg-white/95 backdrop-blur-sm">
-                <CardContent className="p-8">
+              <Card className="rounded-lg border border-slate-200 bg-white/95 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/95">
+                <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-black">
+                    <h2 className="text-xl font-bold text-slate-950 dark:text-white">
                       {selectedMed.name}
                     </h2>
                     <span
@@ -296,21 +298,21 @@ export function MedicationsPage(): JSX.Element {
                     </span>
                   </div>
 
-                  <div className="space-y-4 text-base text-gray-700">
+                  <div className="space-y-4 text-base text-slate-700 dark:text-slate-200">
                     <div>
-                      <p className="font-semibold text-gray-900 mb-1">Dosage</p>
+                      <p className="mb-1 font-semibold text-slate-950 dark:text-slate-100">Dosage</p>
                       <p>{selectedMed.dosage} - {selectedMed.frequency}</p>
                     </div>
 
                     <div>
-                      <p className="font-semibold text-gray-900 mb-1">Prescribed By</p>
+                      <p className="mb-1 font-semibold text-slate-950 dark:text-slate-100">Prescribed By</p>
                       <p>{selectedMed.prescribedBy}</p>
                     </div>
 
                     {selectedMed.instructions && (
-                      <div className="pt-4 border-t border-gray-200">
-                        <p className="font-semibold text-gray-900 mb-2">Details</p>
-                        <p className="text-sm leading-relaxed">{selectedMed.instructions}</p>
+                      <div className="border-t border-slate-200 pt-4 dark:border-slate-700">
+                        <p className="mb-2 font-semibold text-slate-950 dark:text-slate-100">Details</p>
+                        <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{selectedMed.instructions}</p>
                       </div>
                     )}
                   </div>
@@ -319,15 +321,15 @@ export function MedicationsPage(): JSX.Element {
             )}
 
             {/* Reminders Card */}
-            <Card className="rounded-3xl shadow-lg bg-blue-50/95 backdrop-blur-sm border-2 border-[#1E88E5]">
-              <CardContent className="p-8">
+            <Card className="rounded-lg border border-blue-200 bg-blue-50/95 shadow-sm backdrop-blur-sm dark:border-blue-500/30 dark:bg-blue-950/35">
+              <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <AlertCircle className="w-6 h-6 text-[#1E88E5]" />
-                  <h3 className="text-2xl font-bold text-[#1E88E5]">Reminders</h3>
+                  <h3 className="text-xl font-bold text-[#1565C0] dark:text-blue-300">Reminders</h3>
                 </div>
                 <ul className="space-y-3">
                   {REMINDERS.map((reminder, index) => (
-                    <li key={index} className="flex items-start gap-3 text-base text-gray-800">
+                    <li key={index} className="flex items-start gap-3 text-sm leading-6 text-slate-700 dark:text-slate-200">
                       <span className="w-2 h-2 rounded-full bg-[#1E88E5] mt-2 flex-shrink-0" />
                       <span>{reminder}</span>
                     </li>
@@ -335,7 +337,7 @@ export function MedicationsPage(): JSX.Element {
                 </ul>
               </CardContent>
             </Card>
-          </div>
+          </aside>
         </div>
       </main>
     </div>

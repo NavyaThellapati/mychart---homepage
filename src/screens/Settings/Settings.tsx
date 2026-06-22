@@ -62,7 +62,7 @@ export function Settings(): JSX.Element {
     }
   }, [navigate]);
 
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match!");
       return;
@@ -73,17 +73,14 @@ export function Settings(): JSX.Element {
       return;
     }
 
-    // Update password in localStorage
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const userIndex = users.findIndex((u: any) => u.id === currentUser.id);
-
-    if (userIndex !== -1) {
-      users[userIndex].password = newPassword;
-      localStorage.setItem("users", JSON.stringify(users));
-      alert("Password updated successfully!");
+    try {
+      await authService.changePassword(currentPassword, newPassword, confirmPassword);
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
+      alert("Password updated successfully!");
+    } catch (error: any) {
+      alert(error.message || "Unable to update password");
     }
   };
 

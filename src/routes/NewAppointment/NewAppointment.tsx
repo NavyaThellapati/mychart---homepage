@@ -6,6 +6,7 @@ import { Textarea } from "../../components/ui/textarea";
 import { HeaderSection } from "../../components/HeaderSection";
 import { Calendar, Check, X } from "lucide-react";
 import authService from "../../services/authService";
+import appointmentService from "../../services/appointmentService";
 
 export const NewAppointment = (): JSX.Element => {
   const navigate = useNavigate();
@@ -56,13 +57,15 @@ export const NewAppointment = (): JSX.Element => {
   const [reasonForVisit, setReasonForVisit] = useState("");
   const [date, setDate] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const availableSlots = TIME_SLOTS[departmentDoctor] || [];
 
-  const handleSchedule = () => {
+  const handleSchedule = async () => {
     if (!currentUser) return;
     if (!appointmentType || !departmentDoctor || !reasonForVisit || !date || !timeSlot) {
-      alert("Please fill all fields including Time Slot.");
+      setError("Please fill all fields including Time Slot.");
       return;
     }
 
@@ -77,26 +80,22 @@ export const NewAppointment = (): JSX.Element => {
     };
     const startISO = `${date}T${to24h(timeSlot)}:00`;
 
-    const newAppt = {
-      id: crypto.randomUUID(),
-      userId: currentUser.id,           // <—— tie to user
-      type: appointmentType,
-      doctor: departmentDoctor,
-      reason: reasonForVisit,
-      date,
-      time: timeSlot,
-      startISO,                         // normalized ISO
-      notes: additionalNotes,
-      status: "Upcoming",
-      createdAt: new Date().toISOString(),
-    };
-
-    const key = `appointments::${currentUser.id}`;
-    const existing = JSON.parse(localStorage.getItem(key) || "[]");
-    localStorage.setItem(key, JSON.stringify([newAppt, ...existing]));
-
-    alert(`✅ Appointment scheduled with ${departmentDoctor} on ${date} at ${timeSlot}`);
-    navigate("/appointments?tab=upcoming");
+    setSaving(true);
+    setError("");
+    try {
+      await appointmentService.create({
+        type: appointmentType,
+        departmentDoctor,
+        reason: reasonForVisit,
+        notes: additionalNotes,
+        startsAt: startISO,
+      });
+      navigate("/appointments?tab=upcoming");
+    } catch (saveError) {
+      setError(saveError instanceof Error ? saveError.message : "Unable to create appointment");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleCancel = () => navigate("/appointments?tab=upcoming");
@@ -223,9 +222,14 @@ export const NewAppointment = (): JSX.Element => {
                 />
               </div>
 
-              <div className="flex gap-4 pt-4">
-                <Button onClick={handleSchedule} className="flex-1 h-14 bg-[#1E88E5] hover:bg-[#1976d2] text-white font-semibold text-lg rounded-lg">
-                  <Check className="w-5 h-5 mr-2" /> Schedule Appointment
+              <div className="flex flex-wrap gap-4 pt-4">
+                {error && (
+                  <p className="basis-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
+                    {error}
+                  </p>
+                )}
+                <Button disabled={saving} onClick={handleSchedule} className="flex-1 h-14 bg-[#1E88E5] hover:bg-[#1976d2] text-white font-semibold text-lg rounded-lg">
+                  <Check className="w-5 h-5 mr-2" /> {saving ? "Scheduling..." : "Schedule Appointment"}
                 </Button>
                 <Button onClick={() => navigate("/appointments?tab=upcoming")} variant="outline"
                         className="flex-1 h-14 bg-white hover:bg-gray-50 border-2 border-gray-300 text-[#111111] font-semibold text-lg rounded-lg dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700">

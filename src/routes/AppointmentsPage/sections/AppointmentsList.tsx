@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent } from "../../../components/ui/card";
 import { Button } from "../../../components/ui/button";
 import authService from "../../../services/authService";
+import appointmentService, { Appointment } from "../../../services/appointmentService";
 
 // ---------- Helpers ----------
 function formatDateTime(dt?: string) {
@@ -53,18 +54,6 @@ function splitDoctor(deptDoctor: string | undefined) {
   return { specialty: "", doctor: deptDoctor || "" };
 }
 
-// ---------- Types ----------
-interface Appointment {
-  id: string;
-  doctor: string;
-  specialty: string;
-  datetime: string; // ISO
-  status: "Upcoming" | "Attended" | "Did not show up" | "Cancelled";
-  type?: string;
-  reason?: string;
-  notes?: string;
-}
-
 // ---------- Component ----------
 export function AppointmentsList(): JSX.Element {
   const navigate = useNavigate();
@@ -82,68 +71,52 @@ export function AppointmentsList(): JSX.Element {
     past: [],
     canceled: [],
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const loadForUser = useCallback(() => {
+  const loadForUser = useCallback(async () => {
     const user = authService.getCurrentUser();
     if (!user) {
       navigate("/login");
       return;
     }
-    const key = `appointments::${user.id}`;
-    const stored: any[] = JSON.parse(localStorage.getItem(key) || "[]");
+    setLoading(true);
+    setError("");
+    try {
+      const stored = await appointmentService.list();
+      const upcoming: Appointment[] = [];
+      const past: Appointment[] = [];
+      const canceled: Appointment[] = [];
 
-    const upcoming: Appointment[] = [];
-    const past: Appointment[] = [];
-    const canceled: Appointment[] = [];
+      stored.forEach((item) => {
+        const isFuture = new Date(item.datetime).getTime() >= Date.now();
+        if (item.status === "Cancelled") canceled.push(item);
+        else if (item.status === "Attended" || item.status === "Did not show up" || !isFuture) past.push(item);
+        else upcoming.push(item);
+      });
 
-    stored.forEach((raw) => {
-      const { specialty, doctor } = splitDoctor(raw.doctor || raw.departmentDoctor);
-      const iso = coerceISO(raw);
-      if (!iso) return;
-
-      const item: Appointment = {
-        id: raw.id,
-        doctor: raw.doctor || doctor,
-        specialty: raw.specialty || specialty,
-        datetime: iso,
-        status: raw.status || "Upcoming",
-        type: raw.type,
-        reason: raw.reason,
-        notes: raw.notes,
-      };
-
-      const t = new Date(item.datetime).getTime();
-      const isFuture = !isNaN(t) && t >= Date.now();
-
-      if (item.status === "Cancelled") canceled.push(item);
-      else if (item.status === "Attended" || item.status === "Did not show up" || !isFuture) past.push(item);
-      else upcoming.push(item);
-    });
-
-    // sort
-    upcoming.sort((a, b) => +new Date(a.datetime) - +new Date(b.datetime));
-    past.sort((a, b) => +new Date(b.datetime) - +new Date(a.datetime));
-    canceled.sort((a, b) => +new Date(b.datetime) - +new Date(a.datetime));
-
-    setData({ upcoming, past, canceled });
+      upcoming.sort((a, b) => +new Date(a.datetime) - +new Date(b.datetime));
+      past.sort((a, b) => +new Date(b.datetime) - +new Date(a.datetime));
+      canceled.sort((a, b) => +new Date(b.datetime) - +new Date(a.datetime));
+      setData({ upcoming, past, canceled });
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : "Unable to load appointments");
+    } finally {
+      setLoading(false);
+    }
   }, [navigate]);
 
   // initial + whenever tab param changes
   useEffect(() => {
-    loadForUser();
+    void loadForUser();
   }, [loadForUser]);
 
   // refresh when returning from details/cancel (focus) or when other tabs change storage
   useEffect(() => {
-    const onFocus = () => loadForUser();
-    const onStorage = (e: StorageEvent) => {
-      if (e.key && e.key.startsWith("appointments::")) loadForUser();
-    };
+    const onFocus = () => void loadForUser();
     window.addEventListener("focus", onFocus);
-    window.addEventListener("storage", onStorage);
     return () => {
       window.removeEventListener("focus", onFocus);
-      window.removeEventListener("storage", onStorage);
     };
   }, [loadForUser]);
 
@@ -178,6 +151,14 @@ export function AppointmentsList(): JSX.Element {
 
       {/* List */}
       <div className="flex flex-col gap-5">
+        {loading && (
+          <div className="py-12 text-center text-gray-600 dark:text-slate-300">Loading appointments...</div>
+        )}
+        {error && (
+          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
+            {error}
+          </div>
+        )}
         {list.map((appt) => (
           <Card key={appt.id} className="rounded-2xl border border-gray-200 shadow-md bg-white/95 backdrop-blur">
             <CardContent className="p-6 flex items-center justify-between gap-6">
@@ -213,7 +194,7 @@ export function AppointmentsList(): JSX.Element {
           </Card>
         ))}
 
-        {list.length === 0 && (
+        {!loading && !error && list.length === 0 && (
           <div className="text-center py-16 text-gray-500">No {tab} appointments.</div>
         )}
       </div>

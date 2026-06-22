@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => ({
       (screenGraphPlugin() as unknown as PluginOption),
   ].filter(Boolean) as PluginOption[],
   publicDir: "./static",
-  base: "./",
+  base: "/",
   css: {
     postcss: {
       plugins: [tailwind()],

@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Bot,
   Calendar,
@@ -93,6 +94,7 @@ const copy = {
 };
 
 export function MyChartChatbot(): JSX.Element {
+  const navigate = useNavigate();
   const { language } = useLanguage();
   const text = copy[language];
   const [isOpen, setIsOpen] = useState(false);
@@ -177,6 +179,7 @@ export function MyChartChatbot(): JSX.Element {
         text: replyByPath[path] ?? text.replies.default,
       },
     ]);
+    navigate(path);
   };
 
   return (

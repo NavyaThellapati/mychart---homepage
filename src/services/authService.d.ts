@@ -35,6 +35,9 @@ export interface PasswordResetResponse {
 declare const authService: {
   register(userData: RegisterUserData): Promise<AuthResponse>;
   login(username: string, password: string): Promise<AuthResponse>;
+  verifySession(): Promise<{ success: boolean; user: AuthUser }>;
+  updateProfile(profile: Partial<AuthUser>): Promise<{ success: boolean; message: string; user: AuthUser }>;
+  changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Promise<{ success: boolean; message: string }>;
   requestPasswordReset(email: string): Promise<PasswordResetResponse>;
   resetPassword(
     email: string,
