@@ -12,6 +12,7 @@ import {
   EyeOff,
 } from "lucide-react";
 import authService from "../../services/authService";
+import { getPasswordValidationError } from "../../utils/passwordValidation";
 
 function ForgotPassword(): JSX.Element {
   const navigate = useNavigate();
@@ -66,10 +67,9 @@ function ForgotPassword(): JSX.Element {
 
     try {
       const response = await authService.requestPasswordReset(email.trim());
-      setResetToken(response.resetToken || "");
       setMessage(response.message);
-      setMailSent(Boolean(response.emailSent));
-      setStep(response.emailSent ? "success" : "reset");
+      setMailSent(true);
+      setStep("success");
     } catch (err: any) {
       setError(err.message || "Unable to verify this account.");
     } finally {
@@ -80,6 +80,16 @@ function ForgotPassword(): JSX.Element {
   const handlePasswordUpdate = async () => {
     setError("");
     setMessage("");
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+    const passwordError = getPasswordValidationError(newPassword);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
     setLoading(true);
 
     try {

@@ -6,6 +6,7 @@ export interface AuthUser {
   lastName: string;
   email: string;
   phone: string;
+  username?: string;
 }
 
 export interface RegisterUserData {
@@ -26,10 +27,7 @@ export interface AuthResponse {
 
 export interface PasswordResetResponse {
   success: boolean;
-  emailSent?: boolean;
   message: string;
-  resetToken?: string;
-  resetUrl?: string;
 }
 
 declare const authService: {

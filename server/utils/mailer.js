@@ -30,10 +30,12 @@ async function sendPasswordResetEmail({ to, name, resetUrl }) {
   const transporter = createTransporter();
 
   if (!transporter) {
-    console.info('[password-reset] SMTP is not configured. Reset link:', resetUrl);
+    if (process.env.NODE_ENV === 'development') {
+      console.info('[password-reset] SMTP is not configured; email was not sent.');
+    }
     return {
       sent: false,
-      message: 'SMTP is not configured. Reset link was written to the server console.',
+      message: 'SMTP is not configured.',
     };
   }
 

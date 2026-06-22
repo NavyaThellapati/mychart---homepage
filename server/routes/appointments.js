@@ -2,10 +2,18 @@ const crypto = require('crypto');
 const express = require('express');
 const authMiddleware = require('../middleware/auth');
 const { pool } = require('../db');
+const { cleanText } = require('../utils/validation');
 
 const router = express.Router();
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 router.use(authMiddleware);
+router.param('id', (req, res, next, id) => {
+  if (!UUID_PATTERN.test(id)) {
+    return res.status(400).json({ success: false, message: 'Invalid appointment ID' });
+  }
+  next();
+});
 
 function splitDepartmentDoctor(value = '') {
   const parts = value.replace('—', '–').split(/–|-/);
@@ -34,6 +42,33 @@ function serializeAppointment(row) {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
+}
+
+function validateStartTime(value, { requireFuture = true } = {}) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return { error: 'Invalid appointment time' };
+  const earliest = Date.now() + 5 * 60 * 1000;
+  const latest = Date.now() + 2 * 365 * 24 * 60 * 60 * 1000;
+  if (requireFuture && date.getTime() < earliest) {
+    return { error: 'Appointment time must be at least 5 minutes in the future' };
+  }
+  if (date.getTime() > latest) {
+    return { error: 'Appointment time cannot be more than 2 years in the future' };
+  }
+  return { date };
+}
+
+async function hasOverlappingAppointment(userId, startDate, excludedId = null) {
+  const result = await pool.query(
+    `SELECT id FROM appointments
+     WHERE user_id = $1
+       AND status = 'Upcoming'
+       AND ($3::uuid IS NULL OR id <> $3::uuid)
+       AND ABS(EXTRACT(EPOCH FROM (starts_at - $2::timestamptz))) < 1800
+     LIMIT 1`,
+    [userId, startDate.toISOString(), excludedId]
+  );
+  return Boolean(result.rows[0]);
 }
 
 router.get('/', async (req, res, next) => {
@@ -67,7 +102,11 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { type, departmentDoctor, reason, notes = '', startsAt } = req.body;
+    const type = cleanText(req.body.type, { max: 150 });
+    const departmentDoctor = cleanText(req.body.departmentDoctor, { max: 255 });
+    const reason = cleanText(req.body.reason, { max: 2000, multiline: true });
+    const notes = cleanText(req.body.notes ?? '', { min: 0, max: 5000, multiline: true });
+    const { startsAt } = req.body;
     if (!type || !departmentDoctor || !reason || !startsAt) {
       return res.status(400).json({
         success: false,
@@ -75,9 +114,15 @@ router.post('/', async (req, res, next) => {
       });
     }
 
-    const startDate = new Date(startsAt);
-    if (Number.isNaN(startDate.getTime())) {
-      return res.status(400).json({ success: false, message: 'Invalid appointment time' });
+    const startValidation = validateStartTime(startsAt);
+    if (startValidation.error) {
+      return res.status(400).json({ success: false, message: startValidation.error });
+    }
+    if (await hasOverlappingAppointment(req.userId, startValidation.date)) {
+      return res.status(409).json({
+        success: false,
+        message: 'You already have an appointment within 30 minutes of this time',
+      });
     }
 
     const { specialty, doctor } = splitDepartmentDoctor(departmentDoctor);
@@ -95,7 +140,7 @@ router.post('/', async (req, res, next) => {
         specialty,
         reason,
         notes,
-        startDate.toISOString(),
+        startValidation.date.toISOString(),
       ]
     );
 
@@ -120,14 +165,30 @@ router.patch('/:id', async (req, res, next) => {
     }
 
     const previous = current.rows[0];
-    const departmentDoctor = req.body.departmentDoctor ?? previous.department_doctor;
-    const parsed = splitDepartmentDoctor(departmentDoctor);
+    const type = cleanText(req.body.type ?? previous.appointment_type, { max: 150 });
+    const departmentDoctor = cleanText(req.body.departmentDoctor ?? previous.department_doctor, { max: 255 });
+    const reason = cleanText(req.body.reason ?? previous.reason, { max: 2000, multiline: true });
+    const notes = cleanText(req.body.notes ?? previous.notes, { min: 0, max: 5000, multiline: true });
     const startsAt = req.body.startsAt ?? previous.starts_at;
     const validStatuses = ['Upcoming', 'Attended', 'Did not show up', 'Cancelled'];
     const status = req.body.status ?? previous.status;
 
-    if (!validStatuses.includes(status) || Number.isNaN(new Date(startsAt).getTime())) {
+    if (!type || !departmentDoctor || !reason || notes === null || !validStatuses.includes(status)) {
       return res.status(400).json({ success: false, message: 'Invalid appointment update' });
+    }
+    const parsed = splitDepartmentDoctor(departmentDoctor);
+    const startValidation = validateStartTime(startsAt, { requireFuture: status === 'Upcoming' });
+    if (startValidation.error) {
+      return res.status(400).json({ success: false, message: startValidation.error });
+    }
+    if (
+      status === 'Upcoming' &&
+      await hasOverlappingAppointment(req.userId, startValidation.date, req.params.id)
+    ) {
+      return res.status(409).json({
+        success: false,
+        message: 'You already have an appointment within 30 minutes of this time',
+      });
     }
 
     const result = await pool.query(
@@ -144,13 +205,13 @@ router.patch('/:id', async (req, res, next) => {
        WHERE id = $9 AND user_id = $10
        RETURNING *`,
       [
-        req.body.type ?? previous.appointment_type,
+        type,
         departmentDoctor,
         parsed.doctor,
         parsed.specialty,
-        req.body.reason ?? previous.reason,
-        req.body.notes ?? previous.notes,
-        new Date(startsAt).toISOString(),
+        reason,
+        notes,
+        startValidation.date.toISOString(),
         status,
         req.params.id,
         req.userId,

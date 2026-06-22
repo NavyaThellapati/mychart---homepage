@@ -1,19 +1,23 @@
 const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const { getJwtSecret } = require('../config');
 
 const authMiddleware = (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const authorization = req.headers.authorization;
+    const [scheme, token] = authorization?.split(' ') ?? [];
 
-    if (!token) {
+    if (scheme !== 'Bearer' || !token) {
       return res.status(401).json({
         success: false,
         message: 'Authentication required',
       });
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret(), {
+      algorithms: ['HS256'],
+      audience: 'mychart-web',
+      issuer: 'mychart-api',
+    });
     req.userId = decoded.userId;
     req.userEmail = decoded.email;
     

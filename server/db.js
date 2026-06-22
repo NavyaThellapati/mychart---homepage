@@ -1,13 +1,8 @@
 const { Pool } = require('pg');
-
-const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  console.warn('DATABASE_URL is not set. PostgreSQL requests will fail until it is configured.');
-}
+const { getDatabaseUrl } = require('./config');
 
 const pool = new Pool({
-  connectionString,
+  connectionString: getDatabaseUrl(),
   ssl:
     process.env.NODE_ENV === 'production'
       ? { rejectUnauthorized: false }
@@ -22,7 +17,7 @@ async function initializeDatabase() {
       last_name VARCHAR(100) NOT NULL,
       email VARCHAR(255) NOT NULL UNIQUE,
       phone VARCHAR(50) NOT NULL,
-      username VARCHAR(100) NOT NULL UNIQUE,
+      username VARCHAR(255) NOT NULL UNIQUE,
       password_hash TEXT NOT NULL,
       password_reset_token TEXT,
       password_reset_expires TIMESTAMPTZ,
@@ -48,6 +43,8 @@ async function initializeDatabase() {
 
     CREATE INDEX IF NOT EXISTS appointments_user_starts_at_idx
       ON appointments(user_id, starts_at);
+
+    ALTER TABLE users ALTER COLUMN username TYPE VARCHAR(255);
   `);
 }
 

@@ -7,6 +7,7 @@ import authService from "../../services/authService";
 import { ThemeLanguageControls } from "../../components/ThemeLanguageControls";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useTheme } from "../../contexts/ThemeContext";
+import { getPasswordValidationError } from "../../utils/passwordValidation";
 
 export const Register = (): JSX.Element => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export const Register = (): JSX.Element => {
       already: "Already have an account?",
       login: "Log In",
       passwordsMatch: "Passwords do not match",
-      passwordLength: "Password must be at least 6 characters",
+      passwordLength: "Password must be 10-128 characters with uppercase, lowercase, and a number",
       failed: "Registration failed. Please try again.",
     },
     es: {
@@ -67,7 +68,7 @@ export const Register = (): JSX.Element => {
       already: "¿Ya tiene una cuenta?",
       login: "Iniciar sesión",
       passwordsMatch: "Las contraseñas no coinciden",
-      passwordLength: "La contraseña debe tener al menos 6 caracteres",
+      passwordLength: "La contraseña debe tener entre 10 y 128 caracteres e incluir mayúscula, minúscula y número",
       failed: "No se pudo registrar. Inténtelo de nuevo.",
     },
   }[language];
@@ -86,7 +87,7 @@ export const Register = (): JSX.Element => {
       return;
     }
 
-    if (password.length < 6) {
+    if (getPasswordValidationError(password)) {
       setError(text.passwordLength);
       return;
     }

@@ -28,6 +28,7 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import authService from "../../services/authService";
+import { getPasswordValidationError } from "../../utils/passwordValidation";
 import { HeaderSection } from "../../components/HeaderSection"; // Global Header
 
 export function Settings(): JSX.Element {
@@ -68,8 +69,9 @@ export function Settings(): JSX.Element {
       return;
     }
 
-    if (newPassword.length < 6) {
-      alert("Password must be at least 6 characters!");
+    const passwordError = getPasswordValidationError(newPassword);
+    if (passwordError) {
+      alert(passwordError);
       return;
     }
 

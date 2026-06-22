@@ -80,25 +80,17 @@ class AuthService {
   }
 
   async requestPasswordReset(email) {
-    const response = await this.requestJson('/forgot-password', {
+    return this.requestJson('/forgot-password', {
       method: 'POST',
       body: JSON.stringify({ email }),
     });
-    if (response.resetToken) {
-      sessionStorage.setItem('passwordResetEmail', email);
-      sessionStorage.setItem('passwordResetToken', response.resetToken);
-    }
-    return response;
   }
 
   async resetPassword(email, resetToken, newPassword, confirmPassword) {
-    const response = await this.requestJson('/reset-password', {
+    return this.requestJson('/reset-password', {
       method: 'POST',
       body: JSON.stringify({ email, resetToken, newPassword, confirmPassword }),
     });
-    sessionStorage.removeItem('passwordResetEmail');
-    sessionStorage.removeItem('passwordResetToken');
-    return response;
   }
 
   logout() {
