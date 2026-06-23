@@ -74,6 +74,49 @@ async function sendPasswordResetEmail({ to, name, resetUrl }) {
   };
 }
 
+async function sendLoginOtpEmail({ to, name, otp }) {
+  const from = process.env.SMTP_FROM || process.env.SMTP_USER;
+  const transporter = createTransporter();
+
+  if (!transporter) {
+    if (process.env.NODE_ENV === 'development') {
+      console.info(`[mfa] SMTP is not configured; login code for ${to}: ${otp}`);
+    }
+    return {
+      sent: false,
+      message: 'SMTP is not configured.',
+    };
+  }
+
+  await transporter.sendMail({
+    from,
+    to,
+    subject: 'Your MyChart verification code',
+    text: [
+      `Hi ${name || 'there'},`,
+      '',
+      `Your MyChart verification code is ${otp}.`,
+      '',
+      'This code expires in 10 minutes. If you did not try to sign in, change your password immediately.',
+    ].join('\n'),
+    html: `
+      <div style="font-family: Arial, sans-serif; color: #0f172a; line-height: 1.5;">
+        <h2>Your MyChart verification code</h2>
+        <p>Hi ${name || 'there'},</p>
+        <p>Use this one-time code to finish signing in:</p>
+        <p style="font-size: 28px; font-weight: 700; letter-spacing: 4px;">${otp}</p>
+        <p>This code expires in 10 minutes. If you did not try to sign in, change your password immediately.</p>
+      </div>
+    `,
+  });
+
+  return {
+    sent: true,
+    message: 'Verification code sent.',
+  };
+}
+
 module.exports = {
+  sendLoginOtpEmail,
   sendPasswordResetEmail,
 };

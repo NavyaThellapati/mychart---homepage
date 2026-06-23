@@ -3,9 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { HeaderSection } from "../../components/HeaderSection";
 import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { ChevronRight, Download, X } from "lucide-react";
+import {
+  AlertTriangle,
+  Building2,
+  CalendarDays,
+  CheckCircle2,
+  ChevronRight,
+  Clock3,
+  Download,
+  FileText,
+  UserRound,
+  X,
+} from "lucide-react";
 import authService from "../../services/authService";
 import { downloadTestReport } from "../../utils/downloadReport";
+import { useTheme } from "../../contexts/ThemeContext";
 
 /**
  * DEV NOTE:
@@ -38,7 +50,7 @@ function getOutOfRangeClass(result: string, reference: string) {
   const value = parseLastNumber(result);
   if (isNaN(value)) return "";
 
-  const refNums = reference.match(/-?\d+(\.\d+)?/g)?.map(parseFloat) ?? [];
+  const refNums = reference.match(/\d+(\.\d+)?/g)?.map(parseFloat) ?? [];
   const trimmed = reference.trim();
 
   let isOut = false;
@@ -58,18 +70,18 @@ function getOutOfRangeClass(result: string, reference: string) {
 }
 
 // Helper to get status badge styling
-const getStatusBadgeClass = (status: string) => {
+const getStatusBadgeClass = (status: string, isDark: boolean) => {
   switch (status) {
     case "Normal":
-      return "bg-green-100 text-green-700";
+      return isDark ? "bg-emerald-400/15 text-emerald-300 border-emerald-400/25" : "bg-emerald-50 text-emerald-700 border-emerald-200";
     case "Abnormal":
-      return "bg-red-100 text-red-700";
+      return isDark ? "bg-rose-400/15 text-rose-300 border-rose-400/25" : "bg-rose-50 text-rose-700 border-rose-200";
     case "Pending":
-      return "bg-yellow-100 text-yellow-700";
+      return isDark ? "bg-amber-400/15 text-amber-200 border-amber-400/25" : "bg-amber-50 text-amber-700 border-amber-200";
     case "Archived":
-      return "bg-gray-100 text-gray-700";
+      return isDark ? "bg-slate-500/20 text-slate-300 border-slate-500/30" : "bg-slate-100 text-slate-600 border-slate-200";
     default:
-      return "bg-gray-100 text-gray-700";
+      return isDark ? "bg-slate-500/20 text-slate-300 border-slate-500/30" : "bg-slate-100 text-slate-600 border-slate-200";
   }
 };
 
@@ -317,6 +329,7 @@ const MOCK_TEST_RESULTS: TestResult[] = [
 // ------------------ Component ------------------
 export const TestResultsPage = (): JSX.Element => {
   const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
   const [activeTab, setActiveTab] =
     useState<"All Results" | "Abnormal" | "Pending" | "Archived">("All Results");
   const [selectedTest, setSelectedTest] = useState<TestResult | null>(null);
@@ -364,7 +377,8 @@ export const TestResultsPage = (): JSX.Element => {
   }, [myResults, activeTab]);
 
   useEffect(() => {
-    if (filteredResults.length > 0 && !selectedTest) {
+    const selectedIsVisible = filteredResults.some((result) => result.id === selectedTest?.id);
+    if (filteredResults.length > 0 && !selectedIsVisible) {
       setSelectedTest(filteredResults[0]);
     } else if (filteredResults.length === 0) {
       setSelectedTest(null);
@@ -395,10 +409,23 @@ export const TestResultsPage = (): JSX.Element => {
     }
   };
 
+  const resultCounts = {
+    all: myResults.length,
+    abnormal: myResults.filter((result) => result.status === "Abnormal").length,
+    pending: myResults.filter((result) => result.status === "Pending").length,
+    archived: myResults.filter((result) => result.status === "Archived").length,
+  };
+
+  const pageText = isDarkMode ? "text-slate-100" : "text-slate-950";
+  const mutedText = isDarkMode ? "text-slate-300" : "text-slate-600";
+  const panelClass = isDarkMode
+    ? "border-slate-700/80 bg-[#101d2d]/95"
+    : "border-slate-200 bg-white/95";
+
   return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-gradient-to-b from-[#E3F2FD] to-white"
+    <div className={`min-h-screen relative flex flex-col ${isDarkMode ? "bg-[#07111f]" : "bg-slate-50"}`}>
+      <div
+        className="fixed inset-0 opacity-[0.08]"
         style={{
           backgroundImage: 'url(https://c.animaapp.com/mhkp6uvn3Dubvu/img/chatgpt-image-nov-10-2025-03_07_15-pm.png)',
           backgroundSize: 'cover',
@@ -406,158 +433,245 @@ export const TestResultsPage = (): JSX.Element => {
           backgroundRepeat: 'no-repeat',
         }}
       />
-      
-      <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
-      
+
       <HeaderSection />
 
-      <main className="flex-1 container mx-auto px-8 py-12 relative z-10">
-        <div className="text-gray-600 text-sm mb-6">
-          Home <ChevronRight className="inline-block w-4 h-4 mx-1" /> Test Results
+      <main className="relative z-10 mx-auto w-full max-w-[1680px] flex-1 px-4 py-8 sm:px-6 lg:px-10">
+        <button
+          type="button"
+          onClick={() => navigate("/dashboard")}
+          className={`mb-5 inline-flex items-center gap-1 text-sm font-semibold transition-colors hover:text-[#1E88E5] ${mutedText}`}
+        >
+          Home <ChevronRight className="h-4 w-4" /> Test Results
+        </button>
+
+        <div className="mb-7 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase text-[#1E88E5]">
+              <FileText className="h-4 w-4" /> Health records
+            </div>
+            <h1 className={`text-3xl font-bold sm:text-4xl ${pageText}`}>Test Results</h1>
+            <p className={`mt-2 max-w-2xl text-base ${mutedText}`}>
+              Review laboratory reports, reference ranges, and notes from your care team.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 sm:min-w-[420px]">
+            {[
+              { label: "Available", value: resultCounts.all, icon: FileText, tone: "text-[#1E88E5]" },
+              { label: "Needs review", value: resultCounts.abnormal, icon: AlertTriangle, tone: "text-rose-500" },
+              { label: "Pending", value: resultCounts.pending, icon: Clock3, tone: "text-amber-500" },
+            ].map(({ label, value, icon: Icon, tone }) => (
+              <div key={label} className={`border px-4 py-3 ${panelClass}`}>
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`text-xs font-semibold uppercase ${mutedText}`}>{label}</span>
+                  <Icon className={`h-4 w-4 ${tone}`} />
+                </div>
+                <p className={`mt-1 text-2xl font-bold ${pageText}`}>{value}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <h1 className="text-4xl font-bold text-[#1e2a4a] mb-8">Test Results</h1>
-
-        <div className="border-b border-gray-200 mb-8 flex gap-8 text-lg">
+        <div className={`mb-6 flex gap-1 overflow-x-auto border-b ${isDarkMode ? "border-slate-700" : "border-slate-200"}`} role="tablist" aria-label="Test result filters">
           {(["All Results", "Abnormal", "Pending", "Archived"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-3 -mb-px font-semibold transition-colors ${
-                tab === activeTab ? "text-[#1E88E5] border-b-2 border-[#1E88E5]" : "text-gray-600 hover:text-[#1E88E5]"
+              role="tab"
+              aria-selected={tab === activeTab}
+              className={`-mb-px flex min-w-max items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition-colors ${
+                tab === activeTab
+                  ? "border-[#1E88E5] text-[#1E88E5]"
+                  : `border-transparent hover:text-[#1E88E5] ${mutedText}`
               }`}
             >
               {tab}
+              <span className={`min-w-6 border px-1.5 py-0.5 text-center text-xs ${isDarkMode ? "border-slate-600 bg-slate-800" : "border-slate-200 bg-slate-100"}`}>
+                {tab === "All Results"
+                  ? resultCounts.all
+                  : tab === "Abnormal"
+                    ? resultCounts.abnormal
+                    : tab === "Pending"
+                      ? resultCounts.pending
+                      : resultCounts.archived}
+              </span>
             </button>
           ))}
         </div>
 
-        <div className="flex gap-8">
-          <div className="w-1/2 space-y-4">
+        <div className="grid items-start gap-6 xl:grid-cols-[minmax(360px,0.85fr)_minmax(560px,1.15fr)]">
+          <section aria-label="Test result list" className={`min-w-0 overflow-hidden border ${panelClass}`}>
+            <div className={`flex items-center justify-between border-b px-5 py-4 ${isDarkMode ? "border-slate-700" : "border-slate-200"}`}>
+              <div>
+                <h2 className={`text-lg font-bold ${pageText}`}>{activeTab}</h2>
+                <p className={`text-sm ${mutedText}`}>{filteredResults.length} reports</p>
+              </div>
+              <CalendarDays className="h-5 w-5 text-[#1E88E5]" />
+            </div>
+
             {myId && filteredResults.length > 0 ? (
-              filteredResults.map((test) => (
-                <Card
+              <div className={`divide-y ${isDarkMode ? "divide-slate-700" : "divide-slate-200"}`}>
+                {filteredResults.map((test) => (
+                <button
                   key={test.id}
+                  type="button"
                   onClick={() => setSelectedTest(test)}
-                  className={`cursor-pointer rounded-2xl border border-gray-200 shadow-md hover:shadow-lg transition-all bg-white/95 backdrop-blur-sm ${
-                    selectedTest?.id === test.id ? "border-[#1E88E5] ring-2 ring-[#1E88E5]" : ""
+                  className={`relative w-full px-5 py-5 text-left transition-colors ${
+                    selectedTest?.id === test.id
+                      ? isDarkMode ? "bg-[#152a40]" : "bg-blue-50"
+                      : isDarkMode ? "hover:bg-slate-800/70" : "hover:bg-slate-50"
                   }`}
                 >
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className="text-lg font-bold text-gray-900">{test.name}</h3>
+                  {selectedTest?.id === test.id && <span className="absolute inset-y-0 left-0 w-1 bg-[#1E88E5]" />}
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <h3 className={`text-base font-bold ${pageText}`}>{test.name}</h3>
+                      <p className={`mt-1 flex items-center gap-1.5 text-sm ${mutedText}`}>
+                        <CalendarDays className="h-4 w-4 shrink-0" /> {formatDateTime(test.collectedDate, false)}
+                      </p>
+                    </div>
                       <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadgeClass(
-                          test.status
+                        className={`shrink-0 border px-2.5 py-1 text-xs font-bold ${getStatusBadgeClass(
+                          test.status, isDarkMode
                         )}`}
                       >
                         {test.status}
                       </span>
-                    </div>
-                    <p className="text-sm text-gray-600">
-                      Collected: {formatDateTime(test.collectedDate, false)} • Ordered by: {test.orderedBy}
+                  </div>
+                  <p className={`mt-3 line-clamp-1 text-sm ${mutedText}`}>{test.keyValues || "No result summary available"}</p>
+                  <div className={`mt-3 flex items-center justify-between gap-3 text-xs ${mutedText}`}>
+                    <span className="flex min-w-0 items-center gap-1.5"><UserRound className="h-3.5 w-3.5 shrink-0" /><span className="truncate">{test.orderedBy}</span></span>
+                    <ChevronRight className="h-4 w-4 shrink-0" />
+                  </div>
+                  {test.flaggedNotes && (
+                    <p className={`mt-3 border-l-2 border-rose-500 pl-3 text-sm font-semibold ${isDarkMode ? "text-rose-300" : "text-rose-700"}`}>
+                      {test.flaggedNotes}
                     </p>
-                    {test.keyValues && (
-                      <p className="text-sm text-gray-600 mt-1">Key values: {test.keyValues}</p>
-                    )}
-                    {test.flaggedNotes && (
-                      <p className="text-sm text-red-600 mt-1">Flagged: {test.flaggedNotes}</p>
-                    )}
-                  </CardContent>
-                </Card>
-              ))
+                  )}
+                </button>
+              ))}
+              </div>
             ) : myId ? (
-              <div className="text-center py-16 text-gray-500">
+              <div className={`px-6 py-16 text-center ${mutedText}`}>
+                <FileText className="mx-auto mb-3 h-8 w-8 text-slate-400" />
                 No {activeTab.toLowerCase()} test results found.
               </div>
             ) : (
-              <div className="text-center py-16 text-gray-500">
+              <div className={`px-6 py-16 text-center ${mutedText}`}>
                 Loading test results...
               </div>
             )}
-          </div>
+          </section>
 
-          <div className="w-1/2">
+          <section aria-label="Selected result details" className="min-w-0 xl:sticky xl:top-6">
             {selectedTest ? (
-              <Card className="rounded-2xl border border-gray-200 shadow-lg p-6 bg-white/95 backdrop-blur-sm">
+              <Card className={`overflow-hidden rounded-md border shadow-xl ${panelClass}`}>
                 <CardContent className="p-0">
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold text-gray-900">Result Preview</h2>
+                  <div className={`flex flex-col justify-between gap-4 border-b px-6 py-5 sm:flex-row sm:items-start ${isDarkMode ? "border-slate-700" : "border-slate-200"}`}>
+                    <div>
+                      <p className="mb-1 text-sm font-bold uppercase text-[#1E88E5]">Result details</p>
+                      <h2 className={`text-2xl font-bold ${pageText}`}>{selectedTest.name}</h2>
+                    </div>
                     <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadgeClass(
-                        selectedTest.status
+                      className={`w-fit border px-3 py-1.5 text-sm font-bold ${getStatusBadgeClass(
+                        selectedTest.status, isDarkMode
                       )}`}
                     >
                       {selectedTest.status}
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-[#1e2a4a] mb-3">{selectedTest.name}</h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    Collected {formatDateTime(selectedTest.collectedDate, true)}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-2">Ordered by {selectedTest.orderedBy}</p>
-                  {selectedTest.lab && (
-                    <p className="text-sm text-gray-600 mb-4">
-                      Lab: {selectedTest.lab} {selectedTest.labLocation && `— ${selectedTest.labLocation}`}
-                    </p>
-                  )}
+                  <div className={`grid gap-px border-b sm:grid-cols-3 ${isDarkMode ? "border-slate-700 bg-slate-700" : "border-slate-200 bg-slate-200"}`}>
+                    {[
+                      { icon: CalendarDays, label: "Collected", value: formatDateTime(selectedTest.collectedDate, true) },
+                      { icon: UserRound, label: "Ordered by", value: selectedTest.orderedBy },
+                      { icon: Building2, label: "Laboratory", value: selectedTest.lab ? `${selectedTest.lab}${selectedTest.labLocation ? ` · ${selectedTest.labLocation}` : ""}` : "Not provided" },
+                    ].map(({ icon: Icon, label, value }) => (
+                      <div key={label} className={`min-w-0 px-5 py-4 ${isDarkMode ? "bg-[#101d2d]" : "bg-white"}`}>
+                        <p className={`flex items-center gap-2 text-xs font-bold uppercase ${mutedText}`}><Icon className="h-4 w-4 text-[#1E88E5]" />{label}</p>
+                        <p className={`mt-1 truncate text-sm font-semibold ${pageText}`} title={value}>{value}</p>
+                      </div>
+                    ))}
+                  </div>
 
                   {selectedTest.analytes && selectedTest.analytes.length > 0 && (
-                    <div className="mb-4">
-                      <h3 className="text-lg font-bold text-gray-900 mb-2">Key Analytes</h3>
-                      <div className="grid grid-cols-3 gap-2 text-sm text-gray-800">
-                        <span className="font-semibold">Analyte</span>
-                        <span className="font-semibold">Result</span>
-                        <span className="font-semibold">Reference</span>
-                        {selectedTest.analytes.map((analyte, index) => (
-                          <React.Fragment key={index}>
-                            <span>{analyte.name}</span>
-                            <span className={getOutOfRangeClass(analyte.result, analyte.reference)}>
-                              {analyte.result}
-                            </span>
-                            <span>{analyte.reference}</span>
-                          </React.Fragment>
-                        ))}
+                    <div className="px-6 py-5">
+                      <div className="mb-4 flex items-center justify-between gap-3">
+                        <h3 className={`text-lg font-bold ${pageText}`}>Analytes</h3>
+                        <span className={`text-sm ${mutedText}`}>{selectedTest.analytes.length} values</span>
+                      </div>
+                      <div className={`overflow-x-auto border ${isDarkMode ? "border-slate-700" : "border-slate-200"}`}>
+                        <table className="w-full min-w-[520px] border-collapse text-left text-sm">
+                          <thead className={isDarkMode ? "bg-slate-800" : "bg-slate-50"}>
+                            <tr className={mutedText}>
+                              <th className="px-4 py-3 font-bold">Analyte</th>
+                              <th className="px-4 py-3 font-bold">Result</th>
+                              <th className="px-4 py-3 font-bold">Reference range</th>
+                              <th className="px-4 py-3 font-bold">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody className={`divide-y ${isDarkMode ? "divide-slate-700" : "divide-slate-200"}`}>
+                            {selectedTest.analytes.map((analyte, index) => {
+                              const outOfRange = Boolean(getOutOfRangeClass(analyte.result, analyte.reference));
+                              return (
+                                <tr key={index} className={isDarkMode ? "hover:bg-slate-800/60" : "hover:bg-slate-50"}>
+                                  <td className={`px-4 py-3 font-semibold ${pageText}`}>{analyte.name}</td>
+                                  <td className={`px-4 py-3 font-bold ${outOfRange ? (isDarkMode ? "text-rose-300" : "text-rose-700") : pageText}`}>{analyte.result}</td>
+                                  <td className={`px-4 py-3 ${mutedText}`}>{analyte.reference}</td>
+                                  <td className="px-4 py-3">
+                                    <span className={`inline-flex items-center gap-1.5 text-xs font-bold ${outOfRange ? (isDarkMode ? "text-rose-300" : "text-rose-700") : (isDarkMode ? "text-emerald-300" : "text-emerald-700")}`}>
+                                      {outOfRange ? <AlertTriangle className="h-3.5 w-3.5" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+                                      {outOfRange ? "Review" : "In range"}
+                                    </span>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   )}
 
                   {selectedTest.doctorNote && (
-                    <div className="bg-blue-50 border-l-4 border-[#1E88E5] p-4 rounded-lg text-blue-800 text-sm mt-4">
-                      <p className="font-semibold mb-1">Doctor note:</p>
-                      <p>{selectedTest.doctorNote}</p>
+                    <div className={`mx-6 mb-5 border-l-4 border-[#1E88E5] px-5 py-4 ${isDarkMode ? "bg-blue-400/10 text-slate-200" : "bg-blue-50 text-slate-700"}`}>
+                      <p className={`mb-1 font-bold ${pageText}`}>Care team note</p>
+                      <p className="text-sm leading-6">{selectedTest.doctorNote}</p>
                     </div>
                   )}
 
-                  <div className="flex justify-end mt-6">
+                  <div className={`flex justify-end border-t px-6 py-5 ${isDarkMode ? "border-slate-700" : "border-slate-200"}`}>
                     <Button
                       onClick={() => setShowDownloadModal(true)}
-                      className="bg-[#1E88E5] hover:bg-[#1976d2] text-white px-6 py-3 rounded-lg text-base"
+                      className="h-11 bg-[#1E88E5] px-5 text-sm font-bold text-white hover:bg-[#1976d2]"
                     >
-                      <Download className="w-5 h-5 mr-2" /> Download Report
+                      <Download className="mr-2 h-4 w-4" /> Download Report
                     </Button>
                   </div>
                 </CardContent>
               </Card>
             ) : (
-              <div className="text-center py-16 text-gray-500">Select a test to view details.</div>
+              <div className={`border px-6 py-16 text-center ${panelClass} ${mutedText}`}>
+                <FileText className="mx-auto mb-3 h-8 w-8 text-slate-400" />
+                Select a test to view details.
+              </div>
             )}
-          </div>
+          </section>
         </div>
       </main>
 
       {/* Download Modal */}
       {showDownloadModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className={`w-full max-w-md rounded-md border p-6 shadow-2xl ${panelClass}`}>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Download Report</h2>
+              <h2 className={`text-2xl font-bold ${pageText}`}>Download Report</h2>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowDownloadModal(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className={isDarkMode ? "text-slate-300 hover:text-white" : "text-slate-500 hover:text-slate-800"}
               >
                 <X className="w-6 h-6" />
               </Button>
@@ -566,7 +680,7 @@ export const TestResultsPage = (): JSX.Element => {
             <div className="space-y-6">
               {/* Format Selection */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                <label className={`mb-3 block text-sm font-semibold ${pageText}`}>
                   Download Format
                 </label>
                 <div className="flex gap-4">
@@ -575,7 +689,9 @@ export const TestResultsPage = (): JSX.Element => {
                     className={`flex-1 py-3 px-4 rounded-lg border-2 font-semibold transition-colors ${
                       downloadFormat === "pdf"
                         ? "border-[#1E88E5] bg-blue-50 text-[#1E88E5]"
-                        : "border-gray-300 text-gray-700 hover:border-gray-400"
+                        : isDarkMode
+                          ? "border-slate-600 text-slate-200 hover:border-slate-400"
+                          : "border-slate-300 text-slate-700 hover:border-slate-400"
                     }`}
                   >
                     PDF
@@ -585,7 +701,9 @@ export const TestResultsPage = (): JSX.Element => {
                     className={`flex-1 py-3 px-4 rounded-lg border-2 font-semibold transition-colors ${
                       downloadFormat === "csv"
                         ? "border-[#1E88E5] bg-blue-50 text-[#1E88E5]"
-                        : "border-gray-300 text-gray-700 hover:border-gray-400"
+                        : isDarkMode
+                          ? "border-slate-600 text-slate-200 hover:border-slate-400"
+                          : "border-slate-300 text-slate-700 hover:border-slate-400"
                     }`}
                   >
                     CSV
@@ -595,7 +713,7 @@ export const TestResultsPage = (): JSX.Element => {
 
               {/* Include Options */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                <label className={`mb-3 block text-sm font-semibold ${pageText}`}>
                   Include in Report
                 </label>
                 <div className="space-y-3">
@@ -606,7 +724,7 @@ export const TestResultsPage = (): JSX.Element => {
                       onChange={(e) => setIncludeAnalytes(e.target.checked)}
                       className="w-5 h-5 rounded border-gray-300 text-[#1E88E5] focus:ring-[#1E88E5]"
                     />
-                    <span className="text-gray-700">Test Results & Analytes</span>
+                    <span className={mutedText}>Test Results & Analytes</span>
                   </label>
                   <label className="flex items-center gap-3 cursor-pointer">
                     <input
@@ -615,7 +733,7 @@ export const TestResultsPage = (): JSX.Element => {
                       onChange={(e) => setIncludeDoctorNotes(e.target.checked)}
                       className="w-5 h-5 rounded border-gray-300 text-[#1E88E5] focus:ring-[#1E88E5]"
                     />
-                    <span className="text-gray-700">Doctor's Notes</span>
+                    <span className={mutedText}>Doctor's Notes</span>
                   </label>
                 </div>
               </div>
@@ -632,7 +750,7 @@ export const TestResultsPage = (): JSX.Element => {
                 <Button
                   onClick={() => setShowDownloadModal(false)}
                   variant="outline"
-                  className="flex-1 h-12 border-2 border-gray-300 text-gray-700 font-semibold text-base rounded-lg hover:bg-gray-50"
+                  className={`h-12 flex-1 rounded-md border-2 font-semibold ${isDarkMode ? "border-slate-600 text-slate-200 hover:bg-slate-800" : "border-slate-300 text-slate-700 hover:bg-slate-50"}`}
                 >
                   Cancel
                 </Button>

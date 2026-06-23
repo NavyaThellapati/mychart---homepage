@@ -30,6 +30,9 @@ class AuthService {
   }
 
   storeSession(response) {
+    if (response.mfaRequired) {
+      return response;
+    }
     localStorage.setItem('token', response.token);
     localStorage.setItem('user', JSON.stringify(response.user));
     return response;
@@ -47,6 +50,14 @@ class AuthService {
     const response = await this.requestJson('/login', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
+    });
+    return this.storeSession(response);
+  }
+
+  async verifyOtp(mfaToken, otp) {
+    const response = await this.requestJson('/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify({ mfaToken, otp }),
     });
     return this.storeSession(response);
   }

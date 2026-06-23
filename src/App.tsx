@@ -1,27 +1,61 @@
-import React, { useEffect } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Homepage } from "./screens/Homepage";
-import { Login } from "./screens/Login";
-import { Register } from "./screens/Register";
-import { Dashboard } from "./screens/Dashboard";
-import { Profile } from "./screens/Profile";
-import { Settings } from "./screens/Settings";
-import { AppointmentsPage } from "./routes/AppointmentsPage";
-import { NewAppointment } from "./routes/NewAppointment";
-import { AppointmentDetailsPage } from "./routes/AppointmentDetailsPage";
-import { TestResultsPage } from "./routes/TestResultsPage";
-import { BillingPage } from "./routes/BillingPage";
-import { MessagesPage } from "./routes/MessagesPage";
-import { NewMessagePage } from "./routes/NewMessagePage";
-import { ReplyMessagePage } from "./routes/ReplyMessagePage";
-import { PayNowPage } from "./routes/PayNowPage";
-import { MedicationsPage } from "./routes/MedicationsPage";
-import { InteroperabilityGuide } from "./screens/InteroperabilityGuide/InteroperabilityGuide";
-import { FAQs } from "./screens/FAQs";
-import { PrivacyPolicy } from "./screens/PrivacyPolicy";
-import { TermsConditions } from "./screens/TermsConditions";
-import ForgotPassword from "./screens/Login/ForgotPassword";
 import { MyChartChatbot } from "./components/MyChartChatbot";
+
+const lazyNamed = <T extends Record<string, React.ComponentType<any>>, K extends keyof T>(
+  importer: () => Promise<T>,
+  exportName: K
+) =>
+  lazy(async () => ({
+    default: (await importer())[exportName],
+  }));
+
+const Homepage = lazyNamed(() => import("./screens/Homepage"), "Homepage");
+const Login = lazyNamed(() => import("./screens/Login"), "Login");
+const Register = lazyNamed(() => import("./screens/Register"), "Register");
+const Dashboard = lazyNamed(() => import("./screens/Dashboard"), "Dashboard");
+const Profile = lazyNamed(() => import("./screens/Profile"), "Profile");
+const Settings = lazyNamed(() => import("./screens/Settings"), "Settings");
+const AppointmentsPage = lazyNamed(() => import("./routes/AppointmentsPage"), "AppointmentsPage");
+const NewAppointment = lazyNamed(() => import("./routes/NewAppointment"), "NewAppointment");
+const AppointmentDetailsPage = lazyNamed(
+  () => import("./routes/AppointmentDetailsPage"),
+  "AppointmentDetailsPage"
+);
+const TestResultsPage = lazyNamed(() => import("./routes/TestResultsPage"), "TestResultsPage");
+const BillingPage = lazyNamed(() => import("./routes/BillingPage"), "BillingPage");
+const MessagesPage = lazyNamed(() => import("./routes/MessagesPage"), "MessagesPage");
+const NewMessagePage = lazyNamed(() => import("./routes/NewMessagePage"), "NewMessagePage");
+const ReplyMessagePage = lazyNamed(() => import("./routes/ReplyMessagePage"), "ReplyMessagePage");
+const PayNowPage = lazyNamed(() => import("./routes/PayNowPage"), "PayNowPage");
+const MedicationsPage = lazyNamed(() => import("./routes/MedicationsPage"), "MedicationsPage");
+const InteroperabilityGuide = lazyNamed(
+  () => import("./screens/InteroperabilityGuide"),
+  "InteroperabilityGuide"
+);
+const FAQs = lazyNamed(() => import("./screens/FAQs"), "FAQs");
+const PrivacyPolicy = lazyNamed(() => import("./screens/PrivacyPolicy"), "PrivacyPolicy");
+const TermsConditions = lazyNamed(() => import("./screens/TermsConditions"), "TermsConditions");
+const ForgotPassword = lazy(() => import("./screens/Login/ForgotPassword"));
+
+function PageSkeleton(): JSX.Element {
+  return (
+    <div className="min-h-screen bg-slate-50 px-6 py-8 dark:bg-[#020817]">
+      <div className="mx-auto max-w-6xl space-y-6">
+        <div className="h-12 w-56 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+        <div className="grid gap-4 md:grid-cols-3">
+          {[0, 1, 2].map((item) => (
+            <div
+              key={item}
+              className="h-28 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800"
+            />
+          ))}
+        </div>
+        <div className="h-96 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+      </div>
+    </div>
+  );
+}
 
 export const App = (): JSX.Element => {
   useEffect(() => {
@@ -32,34 +66,36 @@ export const App = (): JSX.Element => {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
+      <Suspense fallback={<PageSkeleton />}>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
 
-        <Route
-          path="/interoperability-guide"
-          element={<InteroperabilityGuide />}
-        />
-        <Route path="/faqs" element={<FAQs />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms-and-conditions" element={<TermsConditions />} />
+          <Route
+            path="/interoperability-guide"
+            element={<InteroperabilityGuide />}
+          />
+          <Route path="/faqs" element={<FAQs />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsConditions />} />
 
-        <Route path="/appointments" element={<AppointmentsPage />} />
-        <Route path="/appointments/new" element={<NewAppointment />} />
-        <Route path="/appointments/:id" element={<AppointmentDetailsPage />} />
-        <Route path="/test-results" element={<TestResultsPage />} />
-        <Route path="/billing" element={<BillingPage />} />
-        <Route path="/pay-now" element={<PayNowPage />} />
-        <Route path="/messages" element={<MessagesPage />} />
-        <Route path="/messages/new" element={<NewMessagePage />} />
-        <Route path="/messages/reply" element={<ReplyMessagePage />} />
-        <Route path="/medications" element={<MedicationsPage />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-      </Routes>
+          <Route path="/appointments" element={<AppointmentsPage />} />
+          <Route path="/appointments/new" element={<NewAppointment />} />
+          <Route path="/appointments/:id" element={<AppointmentDetailsPage />} />
+          <Route path="/test-results" element={<TestResultsPage />} />
+          <Route path="/billing" element={<BillingPage />} />
+          <Route path="/pay-now" element={<PayNowPage />} />
+          <Route path="/messages" element={<MessagesPage />} />
+          <Route path="/messages/new" element={<NewMessagePage />} />
+          <Route path="/messages/reply" element={<ReplyMessagePage />} />
+          <Route path="/medications" element={<MedicationsPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Routes>
+      </Suspense>
       <MyChartChatbot />
     </Router>
   );

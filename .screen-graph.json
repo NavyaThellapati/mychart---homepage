@@ -311,15 +311,15 @@
       }
     },
     {
-      "id": "src/screens/Register/Register.tsx:108:8-to-src/screens/Dashboard/Dashboard.tsx",
+      "id": "src/screens/Register/Register.tsx:109:8-to-src/screens/Dashboard/Dashboard.tsx",
       "source": "src/screens/Register/Register.tsx",
       "target": "src/screens/Dashboard/Dashboard.tsx",
       "data": {
         "viaRoute": "/dashboard",
         "trigger": {
           "element": "navigate(\"/dashboard\")",
-          "line": 108,
-          "endLine": 108,
+          "line": 109,
+          "endLine": 109,
           "column": 8,
           "endColumn": 30,
           "sourceFile": "src/screens/Register/Register.tsx"
@@ -327,15 +327,15 @@
       }
     },
     {
-      "id": "src/screens/Register/Register.tsx:295:14-to-src/screens/TermsConditions/TermsConditions.tsx",
+      "id": "src/screens/Register/Register.tsx:296:14-to-src/screens/TermsConditions/TermsConditions.tsx",
       "source": "src/screens/Register/Register.tsx",
       "target": "src/screens/TermsConditions/TermsConditions.tsx",
       "data": {
         "viaRoute": "/terms-and-conditions",
         "trigger": {
           "element": "<Link\n                to=\"/terms-and-conditions\"\n                className=\"text-[#1E88E5] hover:underline\"\n              >\n                {text.terms}\n              </Link>",
-          "line": 295,
-          "endLine": 300,
+          "line": 296,
+          "endLine": 301,
           "column": 14,
           "endColumn": 21,
           "sourceFile": "src/screens/Register/Register.tsx"
@@ -343,15 +343,15 @@
       }
     },
     {
-      "id": "src/screens/Register/Register.tsx:302:14-to-src/screens/PrivacyPolicy/PrivacyPolicy.tsx",
+      "id": "src/screens/Register/Register.tsx:303:14-to-src/screens/PrivacyPolicy/PrivacyPolicy.tsx",
       "source": "src/screens/Register/Register.tsx",
       "target": "src/screens/PrivacyPolicy/PrivacyPolicy.tsx",
       "data": {
         "viaRoute": "/privacy-policy",
         "trigger": {
           "element": "<Link\n                to=\"/privacy-policy\"\n                className=\"text-[#1E88E5] hover:underline\"\n              >\n                {text.privacy}\n              </Link>",
-          "line": 302,
-          "endLine": 307,
+          "line": 303,
+          "endLine": 308,
           "column": 14,
           "endColumn": 21,
           "sourceFile": "src/screens/Register/Register.tsx"
@@ -359,15 +359,15 @@
       }
     },
     {
-      "id": "src/screens/Register/Register.tsx:340:14-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Register/Register.tsx:341:14-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Register/Register.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "<Link\n                to=\"/login\"\n                className=\"text-[#1E88E5] hover:underline font-medium\"\n              >\n                {text.login}\n              </Link>",
-          "line": 340,
-          "endLine": 345,
+          "line": 341,
+          "endLine": 346,
           "column": 14,
           "endColumn": 21,
           "sourceFile": "src/screens/Register/Register.tsx"
@@ -551,15 +551,15 @@
       }
     },
     {
-      "id": "src/screens/Settings/Settings.tsx:53:6-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Settings/Settings.tsx:54:6-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Settings/Settings.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 53,
-          "endLine": 53,
+          "line": 54,
+          "endLine": 54,
           "column": 6,
           "endColumn": 24,
           "sourceFile": "src/screens/Settings/Settings.tsx"
@@ -1095,17 +1095,33 @@
       }
     },
     {
-      "id": "src/routes/TestResultsPage/TestResultsPage.tsx:332:6-to-src/screens/Login/Login.tsx",
+      "id": "src/routes/TestResultsPage/TestResultsPage.tsx:345:6-to-src/screens/Login/Login.tsx",
       "source": "src/routes/TestResultsPage/TestResultsPage.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 332,
-          "endLine": 332,
+          "line": 345,
+          "endLine": 345,
           "column": 6,
           "endColumn": 24,
+          "sourceFile": "src/routes/TestResultsPage/TestResultsPage.tsx"
+        }
+      }
+    },
+    {
+      "id": "src/routes/TestResultsPage/TestResultsPage.tsx:442:25-to-src/screens/Dashboard/Dashboard.tsx",
+      "source": "src/routes/TestResultsPage/TestResultsPage.tsx",
+      "target": "src/screens/Dashboard/Dashboard.tsx",
+      "data": {
+        "viaRoute": "/dashboard",
+        "trigger": {
+          "element": "navigate(\"/dashboard\")",
+          "line": 442,
+          "endLine": 442,
+          "column": 25,
+          "endColumn": 47,
           "sourceFile": "src/routes/TestResultsPage/TestResultsPage.tsx"
         }
       }
@@ -1975,15 +1991,15 @@
       }
     },
     {
-      "id": "src/screens/Login/ForgotPassword.tsx:117:25-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Login/ForgotPassword.tsx:127:25-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Login/ForgotPassword.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 117,
-          "endLine": 117,
+          "line": 127,
+          "endLine": 127,
           "column": 25,
           "endColumn": 43,
           "sourceFile": "src/screens/Login/ForgotPassword.tsx"
@@ -1991,15 +2007,15 @@
       }
     },
     {
-      "id": "src/screens/Login/ForgotPassword.tsx:191:14-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Login/ForgotPassword.tsx:201:14-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Login/ForgotPassword.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "<Link\n                to=\"/login\"\n                className=\"text-blue-500 hover:underline font-semibold\"\n              >\n                Login\n              </Link>",
-          "line": 191,
-          "endLine": 196,
+          "line": 201,
+          "endLine": 206,
           "column": 14,
           "endColumn": 21,
           "sourceFile": "src/screens/Login/ForgotPassword.tsx"
@@ -2007,15 +2023,15 @@
       }
     },
     {
-      "id": "src/screens/Login/ForgotPassword.tsx:348:29-to-src/screens/Login/Login.tsx",
+      "id": "src/screens/Login/ForgotPassword.tsx:358:29-to-src/screens/Login/Login.tsx",
       "source": "src/screens/Login/ForgotPassword.tsx",
       "target": "src/screens/Login/Login.tsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 348,
-          "endLine": 348,
+          "line": 358,
+          "endLine": 358,
           "column": 29,
           "endColumn": 47,
           "sourceFile": "src/screens/Login/ForgotPassword.tsx"

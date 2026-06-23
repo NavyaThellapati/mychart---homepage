@@ -39,6 +39,8 @@ export function Login(): JSX.Element {
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [mfaToken, setMfaToken] = useState("");
+  const [otp, setOtp] = useState("");
 
   const isDark = isDarkMode;
 
@@ -67,6 +69,10 @@ export function Login(): JSX.Element {
       reducedMotion: "Reduce motion",
       backHome: "← Back to Home",
       loginFailed: "Login failed. Please try again.",
+      mfaCode: "Verification code",
+      mfaHelp: "Enter the 6-digit code sent to your email.",
+      verify: "Verify code",
+      verifying: "Verifying...",
     },
     es: {
       heroTitle: "Su salud, claramente conectada.",
@@ -92,6 +98,10 @@ export function Login(): JSX.Element {
       reducedMotion: "Reducir movimiento",
       backHome: "← Volver al inicio",
       loginFailed: "Error al iniciar sesión. Inténtelo de nuevo.",
+      mfaCode: "Código de verificación",
+      mfaHelp: "Ingrese el código de 6 dígitos enviado a su correo electrónico.",
+      verify: "Verificar código",
+      verifying: "Verificando...",
     },
   };
 
@@ -139,6 +149,27 @@ export function Login(): JSX.Element {
     try {
       const response = await authService.login(username, password);
 
+      if (response.mfaRequired && response.mfaToken) {
+        setMfaToken(response.mfaToken);
+        return;
+      }
+
+      if (response.success) {
+        navigate("/dashboard");
+      }
+    } catch (err: any) {
+      setError(err.message || t.loginFailed);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOtpVerification = async () => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await authService.verifyOtp(mfaToken, otp);
       if (response.success) {
         navigate("/dashboard");
       }
@@ -298,6 +329,34 @@ export function Login(): JSX.Element {
                 </Link>
               </div>
 
+              {mfaToken && (
+                <div className="space-y-3">
+                  <p
+                    className={`text-sm ${
+                      isDark ? "text-slate-300" : "text-slate-600"
+                    }`}
+                  >
+                    {t.mfaHelp}
+                  </p>
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={6}
+                    placeholder={t.mfaCode}
+                    value={otp}
+                    onChange={(event) =>
+                      setOtp(event.target.value.replace(/\D/g, "").slice(0, 6))
+                    }
+                    className={`h-14 rounded-xl text-base tracking-[0.3em] ${
+                      isDark
+                        ? "bg-[#102033] border-[#36566f] text-white placeholder:text-slate-400"
+                        : "bg-slate-50 border-slate-200 text-slate-900"
+                    }`}
+                  />
+                </div>
+              )}
+
               {error && (
                 <div
                   className={`px-4 py-3 rounded-xl text-sm border ${
@@ -312,10 +371,20 @@ export function Login(): JSX.Element {
 
               <Button
                 className="w-full h-14 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-xl shadow-lg shadow-blue-600/25 disabled:opacity-50"
-                disabled={!username || !password || loading}
-                onClick={handleLogin}
+                disabled={
+                  mfaToken
+                    ? otp.length !== 6 || loading
+                    : !username || !password || loading
+                }
+                onClick={mfaToken ? handleOtpVerification : handleLogin}
               >
-                {loading ? t.logging : t.login}
+                {mfaToken
+                  ? loading
+                    ? t.verifying
+                    : t.verify
+                  : loading
+                    ? t.logging
+                    : t.login}
               </Button>
 
               <div

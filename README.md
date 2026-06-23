@@ -19,8 +19,11 @@ A responsive full-stack patient portal with JWT authentication, persistent Postg
 ## Features
 
 - Email-first registration and login with signed, one-hour JWT access tokens
+- Role-based users with `patient`, `doctor`, and `admin` roles
+- Optional email-based MFA with expiring one-time verification codes
 - Password hashing with bcrypt
 - Password reset email flow with expiring tokens
+- Audit logs for login, password changes, password resets, and appointment changes
 - PostgreSQL-backed user and appointment data
 - Create appointments with provider, type, date, time, reason, and notes
 - View upcoming, past, and cancelled appointments
@@ -30,6 +33,7 @@ A responsive full-stack patient portal with JWT authentication, persistent Postg
 - Validation for appointment dates, content length, and 30-minute overlap conflicts
 - Rate limits on registration, login, and password-reset endpoints
 - Automated PostgreSQL integration tests and GitHub Actions CI
+- Route-based React code splitting with loading skeletons for major screens
 - Dashboard, test results, billing, medications, and secure messages
 - English and Spanish UI controls
 - Light and dark themes
@@ -44,7 +48,7 @@ A responsive full-stack patient portal with JWT authentication, persistent Postg
 | UI | Radix UI primitives, Lucide icons |
 | Backend | Node.js, Express |
 | Database | PostgreSQL with `pg` connection pooling |
-| Authentication | JWT, bcryptjs |
+| Authentication | JWT, bcryptjs, email OTP MFA |
 | Email | Nodemailer / SMTP |
 | Frontend deployment | Vercel |
 | Backend deployment | Render Web Service |
@@ -57,14 +61,15 @@ flowchart LR
     U[Patient browser] -->|HTTPS| V[Vercel React frontend]
     V -->|REST API + Bearer JWT| R[Render Express API]
     R -->|Parameterized SQL| P[(Render PostgreSQL)]
-    R -->|Password reset| S[SMTP provider]
+    R -->|Password reset + MFA OTP| S[SMTP provider]
     P --> US[Users]
     P --> AP[Appointments]
+    P --> AU[Audit Logs]
 ```
 
 The React frontend stores the JWT and basic user profile in browser storage. All appointment operations call the Express API with `Authorization: Bearer <token>`. The API verifies the token algorithm, issuer, and audience, checks ownership, and uses parameterized PostgreSQL queries so users can only access their own appointments.
 
-The backend is split into a testable Express application factory and a startup entry point. Startup validates required configuration before opening a network port, and integration tests exercise the real HTTP routes against PostgreSQL.
+The frontend lazy-loads major route screens with `React.lazy` and `Suspense`, which keeps the initial Vite bundle smaller while preserving the same routes. The backend is split into a testable Express application factory and a startup entry point. Startup validates required configuration before opening a network port, and integration tests exercise the real HTTP routes against PostgreSQL.
 
 ## API
 
@@ -74,6 +79,7 @@ The backend is split into a testable Express application factory and a startup e
 | --- | --- | --- |
 | POST | `/api/auth/register` | Create a user and return a JWT |
 | POST | `/api/auth/login` | Authenticate and return a JWT |
+| POST | `/api/auth/verify-otp` | Complete MFA login with an emailed OTP when MFA is enabled |
 | GET | `/api/auth/verify` | Verify JWT and return the current user |
 | PATCH | `/api/auth/profile` | Update the authenticated user's profile |
 | PATCH | `/api/auth/password` | Change password after checking the current password |
@@ -130,7 +136,7 @@ The API intentionally refuses to start when `DATABASE_URL` or `JWT_SECRET` is mi
 npm run dev:all
 ```
 
-The backend creates the `users` and `appointments` tables and index automatically on startup.
+The backend creates and evolves the `users`, `appointments`, and `audit_logs` tables and indexes automatically on startup.
 
 - Frontend: `http://127.0.0.1:5173`
 - API: `http://localhost:5001`
@@ -148,7 +154,7 @@ Port `5001` is used locally because macOS Control Center/AirPlay commonly occupi
 | `CLIENT_URL` | Backend | Frontend URL for reset links |
 | `CLIENT_URLS` | Backend | Comma-separated CORS origins |
 | `VITE_API_URL` | Frontend | Deployed Render API origin |
-| `SMTP_*` | Backend | Optional password reset email delivery |
+| `SMTP_*` | Backend | Optional password reset and MFA email delivery |
 
 ## Deploy Backend and PostgreSQL to Render
 
@@ -197,7 +203,7 @@ Available commands:
 
 Set `TEST_DATABASE_URL` when the test database is not available at `postgresql://localhost:5432/mychart_test`. Tests truncate only the configured test database between cases.
 
-The backend suite covers registration, duplicate email handling, successful and failed login, JWT verification, generic password-reset requests, one-time password-reset completion, appointment create/list/update/cancel, invalid dates, overlap conflicts, and cross-user access denial.
+The backend suite covers registration, duplicate email handling, successful and failed login, JWT verification, MFA OTP verification, generic password-reset requests, one-time password-reset completion, password changes, appointment create/list/update/cancel, invalid dates, overlap conflicts, audit log writes, and cross-user access denial.
 
 ## CI/CD
 
@@ -208,6 +214,8 @@ The backend suite covers registration, duplicate email handling, successful and 
 - There are no fallback JWT secrets; startup requires a secret of at least 32 characters.
 - JWT signing and verification are constrained to HS256, the `mychart-api` issuer, and the `mychart-web` audience.
 - Access tokens expire after one hour by default.
+- Users have explicit roles (`patient`, `doctor`, `admin`) and protected routes can require allowed roles with reusable authorization middleware.
+- Optional MFA generates six-digit codes with `crypto.randomInt`, stores only bcrypt-hashed OTPs, expires challenges after 10 minutes, and limits verification attempts.
 - Registration, login, forgot-password, and reset-password requests are rate limited.
 - Forgot-password always returns the same response, whether or not an email exists.
 - Reset tokens are cryptographically random, stored only as SHA-256 hashes, expire after one hour, and are single use.
@@ -218,7 +226,16 @@ The backend suite covers registration, duplicate email handling, successful and 
 - PostgreSQL calls use parameterized queries.
 - Passwords are hashed with bcrypt and never returned by the API.
 - Appointment queries always include the authenticated user ID.
+- Audit logs store user ID, action, timestamp, and JSON metadata for sensitive account and appointment events.
 - The API sends restrictive content, framing, MIME-sniffing, and referrer headers; CORS is restricted to configured frontend origins.
+
+## Performance Improvements
+
+- Major pages are loaded with route-based code splitting through `React.lazy`.
+- `Suspense` displays a lightweight skeleton while route chunks load.
+- Heavy report-generation libraries are separated from the initial route bundle by Vite/Rollup.
+- Before this upgrade, the largest app bundle was approximately `1,204.68 kB` minified and `321.20 kB` gzip.
+- After route splitting, the main app chunk is approximately `392.29 kB` minified and `118.16 kB` gzip, with major pages emitted as separate route chunks.
 
 ## Remaining Security Work
 
@@ -226,4 +243,4 @@ The backend suite covers registration, duplicate email handling, successful and 
 - Rate limiting uses process memory. A horizontally scaled deployment should use a shared Redis-backed rate-limit store.
 - The automatic schema setup is convenient for this portfolio project. Production deployments should use versioned migrations and database constraints or serializable transactions to make appointment overlap prevention race-safe.
 - Password reset requires a configured SMTP provider; production should also monitor delivery failures without exposing them to clients.
-- A real patient portal would additionally require MFA, audit logs, role-based authorization, encrypted backups, secrets management, dependency scanning, and a formal HIPAA security review.
+- A real patient portal would additionally require encrypted backups, centralized secrets management, dependency scanning gates, deeper role-specific workflows, audit log retention policies, and a formal HIPAA security review.

@@ -1,13 +1,16 @@
 const crypto = require('crypto');
 const express = require('express');
 const authMiddleware = require('../middleware/auth');
+const { authorizeRoles } = require('../middleware/authorize');
 const { pool } = require('../db');
+const { logAudit } = require('../utils/auditLogger');
 const { cleanText } = require('../utils/validation');
 
 const router = express.Router();
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 router.use(authMiddleware);
+router.use(authorizeRoles('patient', 'doctor', 'admin'));
 router.param('id', (req, res, next, id) => {
   if (!UUID_PATTERN.test(id)) {
     return res.status(400).json({ success: false, message: 'Invalid appointment ID' });
@@ -143,6 +146,15 @@ router.post('/', async (req, res, next) => {
         startValidation.date.toISOString(),
       ]
     );
+    await logAudit({
+      userId: req.userId,
+      action: 'appointment_create',
+      metadata: {
+        appointmentId: result.rows[0].id,
+        startsAt: result.rows[0].starts_at,
+        type,
+      },
+    });
 
     res.status(201).json({
       success: true,
@@ -217,6 +229,15 @@ router.patch('/:id', async (req, res, next) => {
         req.userId,
       ]
     );
+    await logAudit({
+      userId: req.userId,
+      action: 'appointment_update',
+      metadata: {
+        appointmentId: result.rows[0].id,
+        status: result.rows[0].status,
+        startsAt: result.rows[0].starts_at,
+      },
+    });
 
     res.json({
       success: true,
@@ -240,6 +261,11 @@ router.delete('/:id', async (req, res, next) => {
     if (!result.rows[0]) {
       return res.status(404).json({ success: false, message: 'Appointment not found' });
     }
+    await logAudit({
+      userId: req.userId,
+      action: 'appointment_cancel',
+      metadata: { appointmentId: result.rows[0].id },
+    });
     res.json({
       success: true,
       message: 'Appointment cancelled',
